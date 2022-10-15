@@ -2,6 +2,14 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
+  webpack: (config) => {
+    if(config.experiments) {
+      config.experiments = {};
+    }
+    config.experiments.topLevelAwait = true;
+    config.experiments.layers = true;
+    return config;
+  },
 }
 
-module.exports = nextConfig
+module.exports = nextConfig;
