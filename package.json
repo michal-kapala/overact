@@ -9,8 +9,10 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@headlessui/react": "^1.7.3",
     "@next-auth/prisma-adapter": "^1.0.5",
     "@supabase/supabase-js": "^2.0.0",
+    "@tailwindcss/aspect-ratio": "^0.4.2",
     "apollo-server-micro": "^3.10.3",
     "class-validator": "^0.13.2",
     "graphql": "^15.3.0",

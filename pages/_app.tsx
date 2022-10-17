@@ -4,6 +4,7 @@ import { Session } from "next-auth";
 import { SessionProvider } from "next-auth/react"
 import { ReactQueryDevtools } from 'react-query/devtools'
 import { QueryClientProvider, QueryClient } from 'react-query'
+import { Layout } from '../src/components/global/Layout';
 
 const queryClient = new QueryClient();
 
@@ -12,8 +13,10 @@ function MyApp({ Component, pageProps }: AppProps<{session: Session;}>) {
     return(
       <SessionProvider session={pageProps.session}>
         <QueryClientProvider client={queryClient}>
+          <Layout>
             <Component {...pageProps} />
             <ReactQueryDevtools initialIsOpen={false} position='bottom-right'/>
+          </Layout>
         </QueryClientProvider>
       </SessionProvider>
     )
