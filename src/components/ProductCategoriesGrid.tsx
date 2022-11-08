@@ -10,7 +10,7 @@ export default function ProductCategoriesGrid() {
                 <img src="https://source.unsplash.com/PDX_a_82obo/700x700" alt="Product Image" className="transform transition ease-out group-hover:scale-110" />
                 <div className="absolute inset-0 bg-black bg-opacity-25 transition ease-out group-hover:bg-opacity-0" />
                 <div className="p-4 flex items-center justify-center absolute inset-0">
-                  <div className="py-3 px-4 bg-white bg-opacity-95 rounded-3xl text-sm font-semibold uppercase tracking-wide transition ease-out group-hover:text-white group-hover:bg-blue-600">
+                  <div className="py-3 px-4 bg-white text-black bg-opacity-95 rounded-3xl text-sm font-semibold uppercase tracking-wide transition ease-out group-hover:text-white group-hover:bg-blue-600">
                     Electronics
                   </div>
                 </div>
@@ -20,7 +20,7 @@ export default function ProductCategoriesGrid() {
                 <img src="https://source.unsplash.com/1SAnrIxw5OY/700x700" alt="Product Image" className="transform transition ease-out group-hover:scale-110" />
                 <div className="absolute inset-0 bg-black bg-opacity-25 transition ease-out group-hover:bg-opacity-0" />
                 <div className="p-4 flex items-center justify-center absolute inset-0">
-                  <div className="py-3 px-4 bg-white bg-opacity-95 rounded-3xl text-sm font-semibold uppercase tracking-wide transition ease-out group-hover:text-white group-hover:bg-blue-600">
+                  <div className="py-3 px-4 bg-white text-black bg-opacity-95 rounded-3xl text-sm font-semibold uppercase tracking-wide transition ease-out group-hover:text-white group-hover:bg-blue-600">
                     Computers
                   </div>
                 </div>
@@ -30,7 +30,7 @@ export default function ProductCategoriesGrid() {
                 <img src="https://source.unsplash.com/gUPiTDBdRe4/700x700" alt="Product Image" className="transform transition ease-out group-hover:scale-110" />
                 <div className="absolute inset-0 bg-black bg-opacity-25 transition ease-out group-hover:bg-opacity-0" />
                 <div className="p-4 flex items-center justify-center absolute inset-0">
-                  <div className="py-3 px-4 bg-white bg-opacity-95 rounded-3xl text-sm font-semibold uppercase tracking-wide transition ease-out group-hover:text-white group-hover:bg-blue-600">
+                  <div className="py-3 px-4 bg-white text-black bg-opacity-95 rounded-3xl text-sm font-semibold uppercase tracking-wide transition ease-out group-hover:text-white group-hover:bg-blue-600">
                     Clothes
                   </div>
                 </div>
@@ -40,7 +40,7 @@ export default function ProductCategoriesGrid() {
                 <img src="https://source.unsplash.com/ALpEkP29Eys/700x700" alt="Product Image" className="transform transition ease-out group-hover:scale-110" />
                 <div className="absolute inset-0 bg-black bg-opacity-25 transition ease-out group-hover:bg-opacity-0" />
                 <div className="p-4 flex items-center justify-center absolute inset-0">
-                  <div className="py-3 px-4 bg-white bg-opacity-95 rounded-3xl text-sm font-semibold uppercase tracking-wide transition ease-out group-hover:text-white group-hover:bg-blue-600">
+                  <div className="py-3 px-4 bg-white text-black bg-opacity-95 rounded-3xl text-sm font-semibold uppercase tracking-wide transition ease-out group-hover:text-white group-hover:bg-blue-600">
                     Smart Home
                   </div>
                 </div>
@@ -50,7 +50,7 @@ export default function ProductCategoriesGrid() {
                 <img src="https://source.unsplash.com/164_6wVEHfI/700x700" alt="Product Image" className="transform transition ease-out group-hover:scale-110" />
                 <div className="absolute inset-0 bg-black bg-opacity-25 transition ease-out group-hover:bg-opacity-0" />
                 <div className="p-4 flex items-center justify-center absolute inset-0">
-                  <div className="py-3 px-4 bg-white bg-opacity-95 rounded-3xl text-sm font-semibold uppercase tracking-wide transition ease-out group-hover:text-white group-hover:bg-blue-600">
+                  <div className="py-3 px-4 bg-white text-black bg-opacity-95 rounded-3xl text-sm font-semibold uppercase tracking-wide transition ease-out group-hover:text-white group-hover:bg-blue-600">
                     Shoes
                   </div>
                 </div>
@@ -60,7 +60,7 @@ export default function ProductCategoriesGrid() {
                 <img src="https://source.unsplash.com/wW7XbWYoqK8/700x700" alt="Product Image" className="transform transition ease-out group-hover:scale-110" />
                 <div className="absolute inset-0 bg-black bg-opacity-25 transition ease-out group-hover:bg-opacity-0" />
                 <div className="p-4 flex items-center justify-center absolute inset-0">
-                  <div className="py-3 px-4 bg-white bg-opacity-95 rounded-3xl text-sm font-semibold uppercase tracking-wide transition ease-out group-hover:text-white group-hover:bg-blue-600">
+                  <div className="py-3 px-4 bg-white text-black bg-opacity-95 rounded-3xl text-sm font-semibold uppercase tracking-wide transition ease-out group-hover:text-white group-hover:bg-blue-600">
                     Wearables
                   </div>
                 </div>
