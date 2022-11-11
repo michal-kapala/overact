@@ -14,7 +14,7 @@ export const Footer: FC<any> = () => {
                 <div className="flex pr-2">
                   <Image src="/GitHub-Mark-64px.png" width={32} height={32} />
                 </div>
-                <h3 className="py-2 group-hover:text-blue-400">Overact</h3>
+                <h3 className="py-2 text-black group-hover:text-blue-400">Overact</h3>
               </a>
             </Link>
           </div>
