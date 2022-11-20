@@ -13,10 +13,8 @@ function MyApp({ Component, pageProps }: AppProps<{session: Session;}>) {
     return(
       <SessionProvider session={pageProps.session}>
         <QueryClientProvider client={queryClient}>
-          <Layout>
             <Component {...pageProps} />
             <ReactQueryDevtools initialIsOpen={false} position='bottom-right'/>
-          </Layout>
         </QueryClientProvider>
       </SessionProvider>
     )

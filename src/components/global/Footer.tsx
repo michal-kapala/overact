@@ -21,7 +21,7 @@ export const Footer: FC<any> = () => {
           <div className="pb-4 pt-1 md:pt-4 inline-flex items-center justify-center">
             <span></span>
             <span>
-              Made with <a href="https://tailwindui.com/" className="font-medium text-blue-600 hover:text-blue-400" target="_blank">TaiwindUI</a> and <a href="https://tailkit.com/" className="font-medium text-blue-600 hover:text-blue-400" target="_blank">Tailkit</a>
+              Made with <a href="https://tailwindui.com/" className="font-medium text-blue-600 hover:text-blue-400" target="_blank">TailwindUI</a> and <a href="https://tailkit.com/" className="font-medium text-blue-600 hover:text-blue-400" target="_blank">Tailkit</a>
             </span>
           </div>
         </div>
