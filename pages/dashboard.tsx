@@ -1,46 +1,46 @@
+import React from 'react'
+import Head from 'next/head'
 import { Fragment, useState } from 'react'
 import { Dialog, Menu, Transition } from '@headlessui/react'
 import {
   BellIcon,
-  CalendarIcon,
-  ChartBarIcon,
-  FolderIcon,
   HomeIcon,
-  InboxIcon,
   MenuAlt2Icon,
-  UsersIcon,
+  ShoppingBagIcon,
   XIcon,
 } from '@heroicons/react/outline'
 import { SearchIcon } from '@heroicons/react/solid'
 
+const TAB = {
+  overview: "Overview",
+  products: "Products",
+  projects: "Projects",
+  calendar: "Calendar",
+  documents: "Documents",
+  reports: "Reports"
+};
+
 const navigation = [
-  { name: 'Dashboard', href: '#', icon: HomeIcon, current: true },
-  { name: 'Team', href: '#', icon: UsersIcon, current: false },
-  { name: 'Projects', href: '#', icon: FolderIcon, current: false },
-  { name: 'Calendar', href: '#', icon: CalendarIcon, current: false },
-  { name: 'Documents', href: '#', icon: InboxIcon, current: false },
-  { name: 'Reports', href: '#', icon: ChartBarIcon, current: false },
-]
+  { name: TAB.overview, href: '#', icon: HomeIcon, current: true },
+  { name: TAB.products, href: '#', icon: ShoppingBagIcon, current: false },
+];
+
 const userNavigation = [
   { name: 'Your Profile', href: '#' },
   { name: 'Settings', href: '#' },
   { name: 'Sign out', href: '#' },
-]
+];
 
 export default function Example() {
-  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState(TAB.overview);
 
   return (
     <>
-      {/*
-        This example requires updating your template:
-
-        ```
-        <html class="h-full bg-gray-100">
-        <body class="h-full">
-        ```
-      */}
       <div>
+        <Head>
+          <title>Dashboard | Overact</title>
+        </Head>
         <Transition.Root show={sidebarOpen} as={Fragment}>
           <Dialog as="div" className="relative z-40 md:hidden" onClose={setSidebarOpen}>
             <Transition.Child
@@ -96,9 +96,10 @@ export default function Example() {
                   <div className="mt-5 flex-1 h-0 overflow-y-auto">
                     <nav className="px-2 space-y-1">
                       {navigation.map((item) => (
-                        <a
+                        <button
+                          type="button"
                           key={item.name}
-                          href={item.href}
+                          onClick={() => {setActiveTab(item.name); console.info(item.name);}}
                           className={
                             item.current
                               ? 'bg-gray-900 text-white group flex items-center px-2 py-2 text-base font-medium rounded-md'
@@ -114,7 +115,7 @@ export default function Example() {
                             aria-hidden="true"
                           />
                           {item.name}
-                        </a>
+                        </button>
                       ))}
                     </nav>
                   </div>
@@ -141,9 +142,10 @@ export default function Example() {
             <div className="flex-1 flex flex-col overflow-y-auto">
               <nav className="flex-1 px-2 py-4 space-y-1">
                 {navigation.map((item) => (
-                  <a
+                  <button
+                    type="button"
                     key={item.name}
-                    href={item.href}
+                    onClick={() => {setActiveTab(item.name); console.info(item.name);}}
                     className={
                       item.current 
                       ? 'bg-gray-900 text-white group flex items-center px-2 py-2 text-sm font-medium rounded-md' 
@@ -159,7 +161,7 @@ export default function Example() {
                         aria-hidden="true"
                     />
                     {item.name}
-                  </a>
+                  </button>
                 ))}
               </nav>
             </div>
@@ -250,18 +252,45 @@ export default function Example() {
           </div>
 
           <main className="flex-1">
-            <div className="py-6">
-              <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
-                <h1 className="text-2xl font-semibold text-gray-300">Dashboard</h1>
-              </div>
-              <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
-                {/* Replace with your content */}
-                <div className="py-4">
-                  <div className="border-4 border-dashed border-gray-300 rounded-lg h-96" />
+            {/*Overview*/}
+            {
+              activeTab == TAB.overview 
+              ?
+              <div className="py-6">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+                  <h1 className="text-2xl font-semibold text-gray-300">Overview</h1>
                 </div>
-                {/* /End replace */}
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+                  {/* Replace with your content */}
+                  <div className="py-4">
+                    <div className="border-4 border-dashed border-gray-300 rounded-lg h-96" />
+                  </div>
+                  {/* /End replace */}
+                </div>
               </div>
-            </div>
+              :
+              <div/>
+            }
+            
+            {/*Products*/}
+            {
+              activeTab == TAB.products 
+              ?
+              <div className="py-6">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+                  <h1 className="text-2xl font-semibold text-gray-300">Products</h1>
+                </div>
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+                  {/* Replace with your content */}
+                  <div className="py-4">
+                    <div className="border-4 border-dashed border-gray-300 rounded-lg h-96" />
+                  </div>
+                  {/* /End replace */}
+                </div>
+              </div>
+              :
+              <div/>
+            }
           </main>
         </div>
       </div>
