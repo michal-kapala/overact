@@ -6,7 +6,7 @@ export const Layout: FC<{children?: ReactNode}> = ({ children }) => {
     return(
         <>
         {/* Page Container */}
-        <div id="page-container" className="flex flex-col mx-auto w-full min-h-screen bg-gray-50">
+        <div id="page-container" className="flex flex-col mx-auto w-full min-h-screen text-black bg-gray-50">
             <NavBar />
             {children}
             <Footer />
