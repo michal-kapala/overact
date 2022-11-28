@@ -42,7 +42,7 @@ export default function Example() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeTab, setActiveTab] = useState(TAB.dashboard);
 
-  if(status === "authenticated")
+  if(status === "authenticated" && session.user?.role === "ADMIN")
   {
     return (
       <>

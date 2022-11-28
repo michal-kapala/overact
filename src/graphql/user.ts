@@ -15,6 +15,8 @@ export class User {
     emailVerified?: Date;
     @Field({description: "User's image URI", nullable: true})
     image?: string;
+    @Field({description: "User's permissions role" })
+    role!: string;
 }
 
 // GraphQL resolver
