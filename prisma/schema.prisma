@@ -59,7 +59,44 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
+// User permission roles
 enum Role {
   USER
   ADMIN
+}
+
+// Product model
+model Product {
+  id            String    @id @default(cuid())
+  name          String    @unique
+  price         Float
+  image         String
+  categoryId    String
+  category      Category @relation(fields: [categoryId], references: [id])
+  colors        Color[]
+  sizes         Size[]
+}
+
+// Product category model
+model Category {
+  id            String    @id @default(cuid())
+  name          String    @unique
+  tags          String[]
+  products      Product[]
+}
+
+// Product color model
+model Color {
+  id            String    @id @default(cuid())
+  name          String    @unique
+  rgb           String
+  products      Product[]
+}
+
+// Product size model
+model Size {
+  id            String    @id @default(cuid())
+  name          String    @unique
+  size          String
+  products      Product[]
 }
