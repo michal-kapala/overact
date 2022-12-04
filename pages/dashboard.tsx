@@ -1,9 +1,8 @@
 import Head from 'next/head'
 import { useSession, signOut } from "next-auth/react"
 import React, { Fragment, useState } from 'react'
-import { Dialog, Menu, Tab, Transition } from '@headlessui/react'
+import { Dialog, Menu, Transition } from '@headlessui/react'
 import {
-  BellIcon,
   ChartSquareBarIcon,
   MenuAlt2Icon,
   ShoppingBagIcon,
@@ -12,7 +11,6 @@ import {
   XIcon,
 } from '@heroicons/react/outline'
 import { SearchIcon } from '@heroicons/react/solid'
-import { NavBar } from '../src/components/global/NavBar'
 import { Layout } from '../src/components/global/Layout'
 
 const TAB = {
@@ -27,12 +25,6 @@ const navigation = [
   { name: TAB.orders, icon: TableIcon },
   { name: TAB.products, icon: ShoppingBagIcon },
   { name: TAB.categories, icon: TagIcon },
-];
-
-const userNavigation = [
-  { name: 'Your Profile', href: '#' },
-  { name: 'Settings', href: '#' },
-  { name: 'Sign out', href: '#' },
 ];
 
 export default function Example() {
@@ -141,11 +133,11 @@ export default function Example() {
           <div className="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0">
             {/* Sidebar component, swap this element with another sidebar if you like */}
             <div className="flex-1 flex flex-col min-h-0 bg-gray-800">
-              <div className="flex items-center h-16 flex-shrink-0 px-4 bg-gray-900">
+              <div className="flex justify-center items-center h-16 flex-shrink-0 px-4 bg-gray-900">
                 <img
                   className="h-8 w-auto"
-                  src="https://tailwindui.com/img/logos/workflow-logo-indigo-500-mark-white-text.svg"
-                  alt="Workflow"
+                  src="/overact.png"
+                  alt="Overact"
                 />
               </div>
               <div className="flex-1 flex flex-col overflow-y-auto">
@@ -382,7 +374,7 @@ export default function Example() {
       </>
     );
   }
-  if(status === "unauthenticated") {
+  if(status === "unauthenticated" || (status === "authenticated" && session.user?.role == "USER")) {
     return(
       <Layout>
         <Head>
