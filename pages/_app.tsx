@@ -11,12 +11,12 @@ const queryClient = new QueryClient();
 function MyApp({ Component, pageProps }: AppProps<{session: Session;}>) {
   
     return(
-      <SessionProvider session={pageProps.session}>
-        <QueryClientProvider client={queryClient}>
+      <QueryClientProvider client={queryClient}>
+        <SessionProvider session={pageProps.session}>
             <Component {...pageProps} />
             <ReactQueryDevtools initialIsOpen={false} position='bottom-right'/>
-        </QueryClientProvider>
-      </SessionProvider>
+        </SessionProvider>
+      </QueryClientProvider>
     )
 }
 

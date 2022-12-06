@@ -12,6 +12,8 @@ import {
 } from '@heroicons/react/outline'
 import { SearchIcon } from '@heroicons/react/solid'
 import { Layout } from '../src/components/global/Layout'
+import { request, gql } from 'graphql-request'
+import { useQuery } from 'react-query'
 
 const TAB = {
   dashboard: "Dashboard",
@@ -30,14 +32,39 @@ const navigation = [
 export default function DashboardPage() {
   // auth
   const { data: session, status } = useSession()
+  
+  // users
+
+  const usersQuery = gql`
+    query {
+      users {
+        id
+        name
+      }
+    }
+  `;
+
+  const { isLoading, data, status: usersStatus } = useQuery(
+    'users',
+    async () =>
+      request(
+        'http://localhost:3000/api/graphql',
+        usersQuery,
+      )
+  );
 
   // UI states
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeTab, setActiveTab] = useState(TAB.dashboard);
   const [addModalOpen, setAddModalOpen] = useState(false);
 
+  if(isLoading) {
+    return <div>Users loading...</div>
+  }
+
   if(status === "authenticated" && session.user?.role === "ADMIN")
   {
+    //console.info(`data: ${JSON.stringify(data)}\nstatus: ${usersStatus}`);
     return (
       <>
         <div>

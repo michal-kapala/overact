@@ -1,6 +1,9 @@
 import { ApolloServer } from "apollo-server-micro";
 import { NextApiRequest, NextApiResponse } from "next";
 import { buildSchema } from "type-graphql";
+import { applyMiddleware } from "graphql-middleware";
+import { permissions } from "../../src/graphql/permissions";
+import { createContext } from "../../src/graphql/context";
 import { UserResolver } from "../../src/graphql/user";
 
 export const schema = await buildSchema({
@@ -8,7 +11,8 @@ export const schema = await buildSchema({
 });
 
 const server = new ApolloServer({
-    schema,
+    schema: applyMiddleware(schema, permissions),
+    context: createContext,
 });
 
 export const config = {

@@ -18,6 +18,7 @@
     "class-validator": "^0.13.2",
     "graphql": "^15.3.0",
     "graphql-request": "^5.0.0",
+    "graphql-shield": "^7.6.5",
     "micro": "^9.4.1",
     "next": "12.3.1",
     "next-auth": "^4.14.0",
