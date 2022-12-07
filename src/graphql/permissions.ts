@@ -1,10 +1,11 @@
-import { shield } from "graphql-shield";
+import { allow, shield } from "graphql-shield";
 import { isAdmin } from "./rules/isAdmin";
 
 export const permissions = shield(
     {
         Query: {
-            users: isAdmin
+            users: isAdmin,
+            products: allow,
         }
     },
     { allowExternalErrors: true, }

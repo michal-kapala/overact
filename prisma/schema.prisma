@@ -8,6 +8,13 @@ generator client {
   provider        = "prisma-client-js"
 }
 
+// GraphQL type generator off Prisma's schema
+generator typegraphql {
+  provider            = "typegraphql-prisma"
+  output              = "../prisma/generated/type-graphql"
+  emitTranspiledCode  = true
+}
+
 // NextAuth.js account model
 model Account {
   id                 String  @id @default(cuid())

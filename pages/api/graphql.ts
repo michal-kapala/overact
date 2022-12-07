@@ -1,13 +1,21 @@
+import "reflect-metadata";
 import { ApolloServer } from "apollo-server-micro";
 import { NextApiRequest, NextApiResponse } from "next";
 import { buildSchema } from "type-graphql";
 import { applyMiddleware } from "graphql-middleware";
 import { permissions } from "../../src/graphql/permissions";
 import { createContext } from "../../src/graphql/context";
-import { UserResolver } from "../../src/graphql/user";
+// resolvers
+import { 
+    FindManyUserResolver,
+    FindManyProductResolver, 
+} from "../../prisma/generated/type-graphql";
 
 export const schema = await buildSchema({
-    resolvers: [UserResolver]
+    resolvers: [
+        FindManyUserResolver,
+        FindManyProductResolver,
+    ]
 });
 
 const server = new ApolloServer({
