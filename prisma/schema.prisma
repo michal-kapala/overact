@@ -75,11 +75,12 @@ enum Role {
 // Product model
 model Product {
   id            String    @id @default(cuid())
+  skuId         String    @unique @default(cuid())
   name          String    @unique
   price         Float
   image         String
   categoryId    String
-  category      Category @relation(fields: [categoryId], references: [id])
+  category      Category  @relation(fields: [categoryId], references: [id])
   colors        Color[]
   sizes         Size[]
 }
