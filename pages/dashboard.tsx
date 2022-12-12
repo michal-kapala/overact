@@ -14,6 +14,7 @@ import { SearchIcon } from '@heroicons/react/solid'
 import { Layout } from '../src/components/global/Layout'
 import { request, gql } from 'graphql-request'
 import { useQuery } from 'react-query'
+import AddProductForm from '../src/components/global/forms/AddProductForm'
 
 const TAB = {
   dashboard: "Dashboard",
@@ -64,7 +65,7 @@ export default function DashboardPage() {
 
   if(status === "authenticated" && session.user?.role === "ADMIN")
   {
-    //console.info(`data: ${JSON.stringify(data)}\nstatus: ${usersStatus}`);
+    console.info(`data: ${JSON.stringify(data)}\nstatus: ${usersStatus}`);
     return (
       <>
         <div>
@@ -405,7 +406,7 @@ export default function DashboardPage() {
                       <Dialog.Panel className="mx-auto max-w-sm rounded p-5 bg-white text-black">
                         <Dialog.Title>Add new product</Dialog.Title>
 
-                        {/* ... */}
+                        <AddProductForm />
                       </Dialog.Panel>
                     </div>
                   </div>
