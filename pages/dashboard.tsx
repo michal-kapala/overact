@@ -60,7 +60,7 @@ export default function DashboardPage() {
   const [addModalOpen, setAddModalOpen] = useState(false);
 
   if(isLoading) {
-    return <div>Users loading...</div>
+    return <div>Data loading...</div>
   }
 
   if(status === "authenticated" && session.user?.role === "ADMIN")
@@ -405,7 +405,7 @@ export default function DashboardPage() {
                       {/* The actual dialog panel  */}
                       <Dialog.Panel className="mx-auto max-w-sm rounded p-5 bg-white text-black">
                         <Dialog.Title>Add new product</Dialog.Title>
-
+                        {/* Add product form */}
                         <AddProductForm />
                       </Dialog.Panel>
                     </div>

@@ -8,13 +8,15 @@ import { createContext } from "../../src/graphql/context";
 // resolvers
 import { 
     FindManyUserResolver,
-    FindManyProductResolver, 
+    FindManyProductResolver,
+    CreateOneProductResolver,
 } from "../../prisma/generated/type-graphql";
 
 export const schema = await buildSchema({
     resolvers: [
         FindManyUserResolver,
         FindManyProductResolver,
+        CreateOneProductResolver,
     ]
 });
 

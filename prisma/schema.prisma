@@ -79,8 +79,8 @@ model Product {
   name          String    @unique
   price         Float
   image         String
-  categoryId    String
-  category      Category  @relation(fields: [categoryId], references: [id])
+  categoryId    String?
+  category      Category? @relation(fields: [categoryId], references: [id])
   colors        Color[]
   sizes         Size[]
 }
