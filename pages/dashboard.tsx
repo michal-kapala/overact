@@ -12,9 +12,9 @@ import {
 } from '@heroicons/react/outline'
 import { SearchIcon } from '@heroicons/react/solid'
 import { Layout } from '../src/components/global/Layout'
-import { request, gql } from 'graphql-request'
-import { useQuery } from 'react-query'
 import AddProductForm from '../src/components/global/forms/AddProductForm'
+import AddCategoryForm from '../src/components/global/forms/AddCategoryForm'
+import { useCategories } from '../src/graphql/queries/Category/categories'
 
 const TAB = {
   dashboard: "Dashboard",
@@ -34,38 +34,21 @@ export default function DashboardPage() {
   // auth
   const { data: session, status } = useSession()
   
-  // users
-
-  const usersQuery = gql`
-    query {
-      users {
-        id
-        name
-      }
-    }
-  `;
-
-  const { isLoading, data, status: usersStatus } = useQuery(
-    'users',
-    async () =>
-      request(
-        'http://localhost:3000/api/graphql',
-        usersQuery,
-      )
-  );
+  // product categories (should be in getServerSideProps??)
+  const { isLoading: isCategoriesLoading, data: categories } = useCategories();
 
   // UI states
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeTab, setActiveTab] = useState(TAB.dashboard);
-  const [addModalOpen, setAddModalOpen] = useState(false);
+  const [addCategoryModalOpen, setAddCategoryModalOpen] = useState(false);
+  const [addProductModalOpen, setAddProductModalOpen] = useState(false);
 
-  if(isLoading) {
+  if(isCategoriesLoading) {
     return <div>Data loading...</div>
   }
 
   if(status === "authenticated" && session.user?.role === "ADMIN")
   {
-    console.info(`data: ${JSON.stringify(data)}\nstatus: ${usersStatus}`);
     return (
       <>
         <div>
@@ -130,7 +113,7 @@ export default function DashboardPage() {
                           <button
                             type="button"
                             key={item.name}
-                            onClick={() => {setActiveTab(item.name); console.info(item.name);}}
+                            onClick={() => {setActiveTab(item.name)}}
                             className={
                               activeTab == item.name
                                 ? 'bg-gray-900 text-white group flex items-center px-2 py-2 text-base font-medium rounded-md'
@@ -176,7 +159,7 @@ export default function DashboardPage() {
                     <button
                       type="button"
                       key={item.name}
-                      onClick={() => {setActiveTab(item.name); console.info(item.name);}}
+                      onClick={() => {setActiveTab(item.name)}}
                       className={
                         activeTab == item.name
                         ? 'bg-gray-900 text-white group transition flex items-center px-2 py-2 text-sm font-medium rounded-md w-full' 
@@ -372,7 +355,7 @@ export default function DashboardPage() {
                     <div className="flex flex-row w-full justify-end items-center">
                       <div className="rounded-md shadow">
                         <button className="inline-flex items-center justify-center rounded-md border border-transparent bg-blue-600 px-5 py-2 text-base font-medium text-white hover:bg-blue-700"
-                          onClick={() => setAddModalOpen(!addModalOpen)}
+                          onClick={() => setAddProductModalOpen(!addProductModalOpen)}
                         >
                           Add
                         </button>
@@ -391,8 +374,8 @@ export default function DashboardPage() {
 
                 {/* Add product modal*/}
                 <Dialog
-                  open={addModalOpen}
-                  onClose={() => setAddModalOpen(false)}
+                  open={addProductModalOpen}
+                  onClose={() => setAddProductModalOpen(false)}
                   className="relative z-50"
                 >
                   {/* The backdrop, rendered as a fixed sibling to the panel container */}
@@ -406,7 +389,7 @@ export default function DashboardPage() {
                       <Dialog.Panel className="mx-auto max-w-sm rounded p-5 bg-white text-black">
                         <Dialog.Title>Add new product</Dialog.Title>
                         {/* Add product form */}
-                        <AddProductForm />
+                        <AddProductForm categories={categories?.categories ?? []} setModalOpen={setAddProductModalOpen}/>
                       </Dialog.Panel>
                     </div>
                   </div>
@@ -420,9 +403,22 @@ export default function DashboardPage() {
               {
                 activeTab == TAB.categories 
                 ?
+                <>
                 <div className="py-6">
-                  <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
-                    <h1 className="text-2xl font-semibold text-gray-300">Categories</h1>
+                  <div className="flex flex-row max-w-7xl mx-auto px-4 sm:px-6 md:px-16 w-full">
+                    <div className="flex flex-row w-full">
+                      <h1 className="text-5xl font-semibold text-gray-300">Categories</h1>
+                    </div>
+                    <div className="flex flex-row w-full justify-end items-center">
+                      <div className="rounded-md shadow">
+                        <button className="inline-flex items-center justify-center rounded-md border border-transparent bg-blue-600 px-5 py-2 text-base font-medium text-white hover:bg-blue-700"
+                          onClick={() => setAddCategoryModalOpen(!addProductModalOpen)}
+                        >
+                          Add
+                        </button>
+                      </div>
+                    </div>
+                    
                   </div>
                   <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
                     {/* Replace with your content */}
@@ -432,6 +428,30 @@ export default function DashboardPage() {
                     {/* /End replace */}
                   </div>
                 </div>
+
+                {/* Add product modal*/}
+                <Dialog
+                  open={addCategoryModalOpen}
+                  onClose={() => setAddCategoryModalOpen(false)}
+                  className="relative z-50"
+                >
+                  {/* The backdrop, rendered as a fixed sibling to the panel container */}
+                  <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
+
+                  {/* Full-screen scrollable container */}
+                  <div className="fixed inset-0 overflow-y-auto">
+                    {/* Container to center the panel */}
+                    <div className="flex min-h-full items-center justify-center p-4">
+                      {/* The actual dialog panel  */}
+                      <Dialog.Panel className="mx-auto max-w-sm rounded p-5 bg-white text-black">
+                        <Dialog.Title>Add new Category</Dialog.Title>
+                        {/* Add product form */}
+                        <AddCategoryForm setModalOpen={setAddCategoryModalOpen} />
+                      </Dialog.Panel>
+                    </div>
+                  </div>
+                </Dialog>
+                </>
                 :
                 <div/>
               }

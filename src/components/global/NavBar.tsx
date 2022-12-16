@@ -42,7 +42,7 @@ export const NavBar: FC<{children?: ReactNode}> = () => {
 									value={searchValue}
 									placeholder="Search"
 									onChange={onSearchbarChange}
-									className="w-full block appearance-none rounded-lg bg-transparent text-base text-slate-900 transition placeholder:text-slate-400 focus:outline-none sm:text-sm sm:leading-6"
+									className="w-full block appearance-none rounded-lg border-none outline-none focus:outline-none bg-transparent text-base text-slate-900 transition placeholder:text-slate-400 sm:text-sm sm:leading-6"
 									/>
 								</div>
 							</div>
