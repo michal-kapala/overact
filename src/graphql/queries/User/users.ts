@@ -4,10 +4,10 @@ import { useQuery } from "react-query";
 const query = gql`
 query users {
     users {
-      id
-      name
+        id
+        name
     }
-  }
+}
 `;
 
 /**
@@ -15,7 +15,7 @@ query users {
  * @returns useQuery results with user list
  */
 export function useUsers() {
-    return useQuery('users', async () => {
-        return await request('http://localhost:3000/api/graphql', query);
-    });
+  return useQuery('users', async () => {
+    return await request('http://localhost:3000/api/graphql', query);
+  });
 }

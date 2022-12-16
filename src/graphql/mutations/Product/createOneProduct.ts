@@ -7,7 +7,7 @@ import { ProductCreateInput } from "../../../../prisma/generated/type-graphql";
  * Apollo Server expects the variables inside of 'data' root property.
  */
 export interface ProductCreateVariables {
-    data: ProductCreateInput
+  data: ProductCreateInput
 }
 
 const mutation = gql`
@@ -23,7 +23,7 @@ mutation createOneProduct($data: ProductCreateInput!) {
  * @returns Wrapped useMutation results with new product id.
  */
 export function useCreateOneProduct() {
-    return useMutation('createOneProduct', async (variables: ProductCreateVariables) => {
-        return await request('http://localhost:3000/api/graphql', mutation, variables);
-    });
+  return useMutation('createOneProduct', async (variables: ProductCreateVariables) => {
+    return await request('http://localhost:3000/api/graphql', mutation, variables);
+  });
 }

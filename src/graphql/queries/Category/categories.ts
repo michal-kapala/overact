@@ -3,9 +3,11 @@ import { request, gql } from "graphql-request";
 import { useQuery, UseQueryResult } from "react-query";
 import type { Category } from "../../../../prisma/generated/type-graphql";
 
-// Output type
+/**
+ * Response type for 'categories' query.
+ */
 interface CategoriesResult {
-    categories: Category[]
+  categories: Category[]
 }
 
 const query = gql`
@@ -23,7 +25,7 @@ query categories {
  * @returns Wrapped useQuery results with category list
  */
 export function useCategories(): UseQueryResult<CategoriesResult, unknown> {
-    return useQuery('categories', async () => {
-        return await request('http://localhost:3000/api/graphql', query);
-    });
+  return useQuery('categories', async () => {
+    return await request('http://localhost:3000/api/graphql', query);
+  });
 }

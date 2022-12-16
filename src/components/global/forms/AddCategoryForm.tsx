@@ -4,37 +4,37 @@ import { CategoryCreateInput, CategoryCreatetagsInput } from '../../../../prisma
 import { useCreateOneCategory } from '../../../graphql/mutations/Category/createOneCategory';
 
 interface AddCategoryFormProps {
-    setModalOpen: Function
+  setModalOpen: Function
 }
 
 export default function AddCategoryForm({ setModalOpen }: AddCategoryFormProps) {
-    
-    // name field
-    const [name, setName] = useState("");
-    
-    // tags array
-    const [tags, setTags] = useState({set: []} as CategoryCreatetagsInput);
+  
+  // name field
+  const [name, setName] = useState("");
+  
+  // tags array
+  const [tags, setTags] = useState({set: []} as CategoryCreatetagsInput);
 
-    // mutation hook
-    const {data, status, mutate} = useCreateOneCategory();
+  // mutation hook
+  const {data, status, mutate} = useCreateOneCategory();
 
-    return (
-        <form>
-            <TextInput label='Name' placeholder='An amazing category' input={name} setInput={setName}/>
-            <button type='button' onClick={() => {
-                const data = {
-                    name,
-                    tags,
-                } as CategoryCreateInput;
-                
-                try {
-                    mutate({data});
-                }
-                catch(e: any) {
-                    console.error(e);
-                }
-                setModalOpen(false);
-            }}>Save</button>
-        </form>
-    );
+  return (
+    <form>
+      <TextInput label='Name' placeholder='An amazing category' input={name} setInput={setName}/>
+      <button type='button' onClick={() => {
+        const data = {
+          name,
+          tags,
+        } as CategoryCreateInput;
+        
+        try {
+          mutate({data});
+        }
+        catch(e: any) {
+          console.error(e);
+        }
+        setModalOpen(false);
+      }}>Save</button>
+    </form>
+  );
 }
