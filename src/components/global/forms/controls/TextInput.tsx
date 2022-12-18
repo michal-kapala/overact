@@ -1,11 +1,12 @@
 interface TextInputProps {
   label: string,
   placeholder: string,
+  maxLength: number,
   input: string,
   setInput: Function,
 }
 
-export default function TextInput({label, placeholder, input, setInput}: TextInputProps) {
+export default function TextInput({label, placeholder, maxLength, input, setInput}: TextInputProps) {
 
   return (
     <div>
@@ -19,6 +20,7 @@ export default function TextInput({label, placeholder, input, setInput}: TextInp
           id={label}
           className="block w-full rounded-md border-gray-300 pl-7 pr-12 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
           placeholder={placeholder}
+          maxLength={maxLength}
           value={input}
           onChange={(e) => setInput(e.target.value)}
         />

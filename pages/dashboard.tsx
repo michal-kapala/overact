@@ -391,7 +391,9 @@ export default function DashboardPage() {
                         <div className="flex min-h-full items-center justify-center p-4">
                           {/* The actual dialog panel  */}
                           <Dialog.Panel className="mx-auto max-w-sm rounded p-5 bg-white text-black">
-                            <Dialog.Title>Add new product</Dialog.Title>
+                            <div className="flex justify-center">
+                              <Dialog.Title>Add new product</Dialog.Title>
+                            </div>
                             {/* Add product form */}
                             <AddProductForm categories={categories?.categories ?? []} setModalOpen={setAddProductModalOpen}/>
                           </Dialog.Panel>
@@ -433,7 +435,7 @@ export default function DashboardPage() {
                       </div>
                     </div>
 
-                    {/* Add product modal*/}
+                    {/* Add category modal*/}
                     <Dialog
                       open={addCategoryModalOpen}
                       onClose={() => setAddCategoryModalOpen(false)}
@@ -448,8 +450,10 @@ export default function DashboardPage() {
                         <div className="flex min-h-full items-center justify-center p-4">
                           {/* The actual dialog panel  */}
                           <Dialog.Panel className="mx-auto max-w-sm rounded p-5 bg-white text-black">
-                            <Dialog.Title>Add new Category</Dialog.Title>
-                            {/* Add product form */}
+                            <div className="flex justify-center">
+                              <Dialog.Title>Add new Category</Dialog.Title>
+                            </div>
+                            {/* Add category form */}
                             <AddCategoryForm setModalOpen={setAddCategoryModalOpen} />
                           </Dialog.Panel>
                         </div>

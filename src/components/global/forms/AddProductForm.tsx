@@ -28,35 +28,63 @@ export default function AddProductForm({ categories, setModalOpen }: AddProductF
   const {data, status, mutate} = useCreateOneProduct();
 
   return (
-    <form>
-      <TextInput label='Name' placeholder='An amazing product' input={name} setInput={setName}/>
-      <TextInput label='SKU' placeholder='Barcode' input={skuId} setInput={setSkuId}/>
-      <PriceInput label='Price' placeholder='0.00' input={price} setInput={setPrice} />
-      <CategoryCombo categories={categories} setCategory={setCategory}/>
+    <form className="flex flex-col justify-center">
+      <div className="pt-4">
+        <TextInput 
+          label='Name'
+          placeholder='An amazing product'
+          maxLength={50}
+          input={name} 
+          setInput={setName}
+        />
+      </div>
+      <div className="pt-4">
+        <TextInput
+          label='SKU'
+          placeholder='Barcode'
+          maxLength={20}
+          input={skuId}
+          setInput={setSkuId}
+        />
+      </div>
+      <div className="pt-4">
+        <PriceInput
+          label='Price'
+          placeholder='0.00'
+          input={price}
+          setInput={setPrice}
+        />
+      </div>
+      <div className="p-4">
+        <CategoryCombo categories={categories} setCategory={setCategory}/>
+      </div>
 
-      <button type='button' onClick={() => {
-        const catNested = {
-          connect: {
-            id: category.id
+      <button className="justify-center items-center rounded-md border border-transparent bg-blue-600 disabled:bg-gray-500 px-4 py-1 text-base font-medium text-white hover:bg-blue-700"
+        type='button'
+        disabled={name.length == 0 || skuId.length == 0 || price <= 0}
+        onClick={() => {
+          const catNested = {
+            connect: {
+              id: category.id
+            }
+          } as CategoryCreateNestedOneWithoutProductsInput;
+
+          const data = {
+            skuId,
+            name,
+            price,
+            image: "test_image.png",
+            category: catNested,
+          } as ProductCreateInput;
+          
+          try {
+            mutate({data});
           }
-        } as CategoryCreateNestedOneWithoutProductsInput;
-
-        const data = {
-          skuId,
-          name,
-          price,
-          image: "test_image.png",
-          category: catNested,
-        } as ProductCreateInput;
-        
-        try {
-          mutate({data});
-        }
-        catch(e: any) {
-          console.error(e);
-        }
-        setModalOpen(false);
-      }}>Save</button>
+          catch(e: any) {
+            console.error(e);
+          }
+          setModalOpen(false);
+        }}>Save</button>
     </form>
   );
 }
