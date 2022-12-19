@@ -34,7 +34,7 @@ export default function ChipInput({label, placeholder, input, setInput}: ChipInp
           <button className="items-center justify-center rounded-md border border-transparent bg-blue-600 disabled:bg-gray-500 ml-1 px-4 py-1 text-base font-medium text-white hover:bg-blue-700"
             type="button" 
             // max # of tags
-            disabled={input.length >= 5}
+            disabled={input.length >= 5 || tag.length <= 0}
             onClick={() => {
               setInput([...input, tag]); 
               setTag('');

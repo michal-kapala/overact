@@ -91,6 +91,8 @@ model Category {
   name          String    @unique
   tags          String[]
   products      Product[]
+  sizeable      Boolean   @default(false)
+  colorable     Boolean   @default(false)
 }
 
 // Product color model
