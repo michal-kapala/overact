@@ -9,19 +9,24 @@ import {
   TableIcon,
   TagIcon,
   XIcon,
+  ColorSwatchIcon,
+  ScissorsIcon
 } from '@heroicons/react/outline'
 import { SearchIcon } from '@heroicons/react/solid'
 import { Layout } from '../src/components/global/Layout'
 import AddProductForm from '../src/components/global/forms/AddProductForm'
 import AddCategoryForm from '../src/components/global/forms/AddCategoryForm'
+import AddColorForm from '../src/components/global/forms/AddColorForm'
 import { useCategories } from '../src/graphql/queries/Category/categories'
-import { OveractUser } from '../src/types/OveractUser'
+import type { OveractUser } from '../src/types/OveractUser'
 
 const TAB = {
   dashboard: "Dashboard",
   products: "Products",
   categories: "Categories",
-  orders: "Orders"
+  orders: "Orders",
+  colors: "Colors",
+  sizes: "Sizes"
 };
 
 const navigation = [
@@ -29,6 +34,8 @@ const navigation = [
   { name: TAB.orders, icon: TableIcon },
   { name: TAB.products, icon: ShoppingBagIcon },
   { name: TAB.categories, icon: TagIcon },
+  { name: TAB.colors, icon: ColorSwatchIcon },
+  { name: TAB.sizes, icon: ScissorsIcon },
 ];
 
 export default function DashboardPage() {
@@ -43,6 +50,7 @@ export default function DashboardPage() {
   const [activeTab, setActiveTab] = useState(TAB.dashboard);
   const [addCategoryModalOpen, setAddCategoryModalOpen] = useState(false);
   const [addProductModalOpen, setAddProductModalOpen] = useState(false);
+  const [addColorModalOpen, setAddColorModalOpen] = useState(false);
 
   if(isCategoriesLoading) {
     return <div>Data loading...</div>
@@ -372,7 +380,7 @@ export default function DashboardPage() {
                         <div className="py-4">
                           <div className="border-4 border-dashed border-gray-300 rounded-lg h-96" />
                         </div>
-                        {/* /End replace */}
+                        {/* End replace */}
                       </div>
                     </div>
 
@@ -431,7 +439,7 @@ export default function DashboardPage() {
                         <div className="py-4">
                           <div className="border-4 border-dashed border-gray-300 rounded-lg h-96" />
                         </div>
-                        {/* /End replace */}
+                        {/* End replace */}
                       </div>
                     </div>
 
@@ -460,6 +468,85 @@ export default function DashboardPage() {
                       </div>
                     </Dialog>
                   </>
+                  :
+                  <div/>
+              }
+
+              {/*Colors*/}
+              {
+                activeTab == TAB.colors 
+                  ?
+                  <>
+                    <div className="py-6">
+                      <div className="flex flex-row max-w-7xl mx-auto px-4 sm:px-6 md:px-16 w-full">
+                        <div className="flex flex-row w-full">
+                          <h1 className="text-5xl font-semibold text-gray-300">Colors</h1>
+                        </div>
+                        <div className="flex flex-row w-full justify-end items-center">
+                          <div className="rounded-md shadow">
+                            <button className="inline-flex items-center justify-center rounded-md border border-transparent bg-blue-600 px-5 py-2 text-base font-medium text-white hover:bg-blue-700"
+                              onClick={() => setAddColorModalOpen(!addColorModalOpen)}
+                            >
+                              Add
+                            </button>
+                          </div>
+                        </div>
+                        
+                      </div>
+                      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+                        {/* Replace with your content */}
+                        <div className="py-4">
+                          <div className="border-4 border-dashed border-gray-300 rounded-lg h-96" />
+                        </div>
+                        {/* End replace */}
+                      </div>
+                    </div>
+
+                    {/* Add color modal*/}
+                    <Dialog
+                      open={addColorModalOpen}
+                      onClose={() => setAddColorModalOpen(false)}
+                      className="relative z-50"
+                    >
+                      {/* The backdrop, rendered as a fixed sibling to the panel container */}
+                      <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
+
+                      {/* Full-screen scrollable container */}
+                      <div className="fixed inset-0 overflow-y-auto">
+                        {/* Container to center the panel */}
+                        <div className="flex min-h-full items-center justify-center p-4">
+                          {/* The actual dialog panel  */}
+                          <Dialog.Panel className="mx-auto max-w-sm rounded p-5 bg-white text-black">
+                            <div className="flex justify-center">
+                              <Dialog.Title>Add new Color</Dialog.Title>
+                            </div>
+                            {/* Add category form */}
+                            <AddColorForm setModalOpen={setAddColorModalOpen}/>
+                          </Dialog.Panel>
+                        </div>
+                      </div>
+                    </Dialog>
+                  </>
+                  :
+                  <div/>
+              }
+
+              {/*Sizes*/}
+              {
+                activeTab == TAB.sizes 
+                  ?
+                  <div className="py-6">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+                      <h1 className="text-2xl font-semibold text-gray-300">Sizes</h1>
+                    </div>
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+                      {/* Replace with your content */}
+                      <div className="py-4">
+                        <div className="border-4 border-dashed border-gray-300 rounded-lg h-96" />
+                      </div>
+                      {/* End replace */}
+                    </div>
+                  </div>
                   :
                   <div/>
               }

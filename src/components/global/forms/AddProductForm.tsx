@@ -4,6 +4,7 @@ import PriceInput from './controls/PriceInput';
 import type { Category, CategoryCreateNestedOneWithoutProductsInput, CategoryWhereUniqueInput, ProductCreateInput } from '../../../../prisma/generated/type-graphql';
 import { useCreateOneProduct } from '../../../graphql/mutations/Product/createOneProduct';
 import CategoryCombo from './controls/CategoryCombo';
+import ImageUpload from './controls/ImageUpload';
 
 interface AddProductFormProps {
   categories: Category[]
@@ -22,7 +23,10 @@ export default function AddProductForm({ categories, setModalOpen }: AddProductF
   const [price, setPrice] = useState(0);
 
   // category mapped for input
-  const [category, setCategory] = useState({id: "", name: ""} as CategoryWhereUniqueInput);
+  const [category, setCategory] = useState<CategoryWhereUniqueInput>({id: "", name: ""});
+
+  // image file
+  const [image, setImage] = useState<File>();
 
   // mutation hook
   const {data, status, mutate} = useCreateOneProduct();
@@ -59,9 +63,13 @@ export default function AddProductForm({ categories, setModalOpen }: AddProductF
         <CategoryCombo categories={categories} setCategory={setCategory}/>
       </div>
 
+      <div className="">
+        <ImageUpload setInput={setImage}/>
+      </div>
+
       <button className="justify-center items-center rounded-md border border-transparent bg-blue-600 disabled:bg-gray-500 px-4 py-1 text-base font-medium text-white hover:bg-blue-700"
         type='button'
-        disabled={name.length == 0 || skuId.length == 0 || price <= 0}
+        disabled={name.length == 0 || skuId.length == 0 || price <= 0 || image === undefined}
         onClick={() => {
           const catNested = {
             connect: {
@@ -69,11 +77,16 @@ export default function AddProductForm({ categories, setModalOpen }: AddProductF
             }
           } as CategoryCreateNestedOneWithoutProductsInput;
 
+          // TODO: call next route for supabase auth & upload
+          // TODO: get the image path for db
+          // TODO: define image loader for supabase storage to display images
+
           const data = {
             skuId,
             name,
             price,
-            image: "test_image.png",
+            // the name should allow to get the image from Supabase Storage
+            image: image?.name,
             category: catNested,
           } as ProductCreateInput;
           
