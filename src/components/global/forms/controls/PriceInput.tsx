@@ -22,7 +22,12 @@ export default function PriceInput({label, placeholder, input, setInput}: PriceI
           className="block w-full rounded-md border-gray-300 pl-7 pr-12 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm appearance-none"
           placeholder={placeholder}
           value={input}
-          onChange={(e) => setInput(parseFloat(e.target.value))}
+          onChange={(e) => {
+            let value = parseFloat(e.target.value);
+            if(isNaN(value) || value < 0)
+              return;
+            setInput(parseFloat(e.target.value))
+          }}
         />
       </div>
     </div>

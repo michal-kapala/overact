@@ -14,6 +14,7 @@ export const permissions = shield(
     Mutation: {
       createOneProduct: isAdmin,
       createOneCategory: isAdmin,
+      createOneColor: isAdmin,
     },
   },
   { allowExternalErrors: true, }

@@ -9,8 +9,18 @@ interface CategoryComboProps {
 }
 
 export default function CategoryCombo({categories, setCategory}: CategoryComboProps) {
+  
+  // Only used if there are no categories in the db
+  const stubCat = {
+    id: "stub",
+    name: "Default category",
+    tags: [],
+    sizeable: false,
+    colorable: false
+  } as Category;
+  
   // UI state
-  const [selected, setSelected] = useState(categories[0])
+  const [selected, setSelected] = useState(categories[0] ?? stubCat);
 
   return (
     <div className="w-72">
