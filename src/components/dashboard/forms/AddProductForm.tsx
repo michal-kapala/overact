@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import TextInput from './controls/TextInput';
-import PriceInput from './controls/PriceInput';
+import TextInput from '../../global/controls/TextInput';
+import PriceInput from '../../global/controls/PriceInput';
 import type { Category, CategoryCreateNestedOneWithoutProductsInput, CategoryWhereUniqueInput, ProductCreateInput } from '../../../../prisma/generated/type-graphql';
 import { useCreateOneProduct } from '../../../graphql/mutations/Product/createOneProduct';
-import CategoryCombo from './controls/CategoryCombo';
-import ImageUpload from './controls/ImageUpload';
+import CategoryCombo from '../../global/controls/CategoryCombo';
+import ImageUpload from '../../global/controls/ImageUpload';
 
 interface AddProductFormProps {
   categories: Category[]

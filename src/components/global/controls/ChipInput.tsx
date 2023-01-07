@@ -2,7 +2,7 @@ import { useState } from "react";
 import Chip from "@mui/material/Chip";
 import Stack from "@mui/material/Stack";
 import { ThemeProvider } from '@mui/material/styles';
-import { theme } from "../../../mui/theme";
+import { theme } from "../../mui/theme";
 
 interface ChipInputProps {
   label: string,

@@ -1,7 +1,7 @@
 import { Fragment, useState } from 'react'
 import { Listbox, Transition } from '@headlessui/react'
 import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/solid'
-import { Category } from '../../../../../prisma/generated/type-graphql'
+import { Category } from '../../../../prisma/generated/type-graphql'
 
 interface CategoryComboProps {
   categories: Category[],

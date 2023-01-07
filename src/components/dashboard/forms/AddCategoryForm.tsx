@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import TextInput from './controls/TextInput';
+import TextInput from '../../global/controls/TextInput';
 import { CategoryCreateInput, CategoryCreatetagsInput } from '../../../../prisma/generated/type-graphql';
 import { useCreateOneCategory } from '../../../graphql/mutations/Category/createOneCategory';
-import ChipInput from './controls/ChipInput';
-import Switch from './controls/Switch';
+import ChipInput from '../../global/controls/ChipInput';
+import Switch from '../../global/controls/Switch';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 

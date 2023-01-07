@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { ColorPicker, useColor } from "react-color-palette";
 import "react-color-palette/lib/css/styles.css";
-import TextInput from "./controls/TextInput";
+import TextInput from "../../global/controls/TextInput";
 
 import { ColorCreateInput } from "../../../../prisma/generated/type-graphql";
 import { ColorCreateVariables, useCreateOneColor } from "../../../graphql/mutations/Color/createOneColor";
