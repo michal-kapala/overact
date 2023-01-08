@@ -1,10 +1,13 @@
 import { useState } from 'react';
 import TextInput from '../../global/controls/TextInput';
 import PriceInput from '../../global/controls/PriceInput';
-import type { Category, CategoryCreateNestedOneWithoutProductsInput, CategoryWhereUniqueInput, ProductCreateInput } from '../../../../prisma/generated/type-graphql';
-import { useCreateOneProduct } from '../../../graphql/mutations/Product/createOneProduct';
 import CategoryCombo from '../../global/controls/CategoryCombo';
 import ImageUpload from '../../global/controls/ImageUpload';
+import type { Category, CategoryCreateNestedOneWithoutProductsInput, CategoryWhereUniqueInput, ProductCreateInput } from '../../../../prisma/generated/type-graphql';
+import { useCreateOneProduct } from '../../../graphql/mutations/Product/createOneProduct';
+import { StorageResponse } from '../../../types/StorageResponse';
+import { createClient } from '@supabase/supabase-js';
+import { v4 as uuidv4 } from 'uuid';
 
 interface AddProductFormProps {
   categories: Category[]
@@ -70,32 +73,57 @@ export default function AddProductForm({ categories, setModalOpen }: AddProductF
       <button className="justify-center items-center rounded-md border border-transparent bg-blue-600 disabled:bg-gray-500 px-4 py-1 text-base font-medium text-white hover:bg-blue-700"
         type='button'
         disabled={name.length == 0 || skuId.length == 0 || price <= 0 || image === undefined}
-        onClick={() => {
-          const catNested = {
-            connect: {
-              id: category.id
-            }
-          } as CategoryCreateNestedOneWithoutProductsInput;
-
-          // TODO: call next route for supabase auth & upload
-          // TODO: get the image path for db
-          // TODO: define image loader for supabase storage to display images
-
-          const data = {
-            skuId,
-            name,
-            price,
-            // the name should allow to get the image from Supabase Storage
-            image: image?.name,
-            category: catNested,
-          } as ProductCreateInput;
-          
+        onClick={async () => {
+          // get api key and supabase storage base url
+          const response = await fetch('/api/supabase/storage');
           try {
-            mutate({data});
+            const supaEnvs = await response.json() as StorageResponse;
+            if(supaEnvs.url && supaEnvs.key && image != undefined) {
+              // upload the image to Supabase Storage bucket
+              // might want to save the client and use useSupabaseClient instead
+              // https://supabase.com/docs/guides/auth/auth-helpers/nextjs#basic-setup
+              const supabase = createClient(supaEnvs.url, supaEnvs.key);
+
+              const { data: uploadData, error } = await supabase
+                .storage
+                .from('product-images')
+                .upload(uuidv4(), image, {
+                  cacheControl: '3600',
+                  upsert: false
+                })
+
+              if(error) {
+                console.error(JSON.stringify(error));
+                return;
+              }
+
+              // prepare the product for GQL mutation
+              const catNested = {
+                connect: {
+                  id: category.id
+                }
+              } as CategoryCreateNestedOneWithoutProductsInput;
+
+              // construct the full image URI
+              // this might get subbed in future by an image loader
+              const imageURI = `${supaEnvs.url}/storage/v1/object/public/product-images/${uploadData.path}`
+
+              const data = {
+                skuId,
+                name,
+                price,
+                image: imageURI,
+                category: catNested,
+              } as ProductCreateInput;
+              
+              mutate({data});
+            }
           }
-          catch(e: any) {
+          // Unauthorized user in dashboard or network error
+          catch(e) {
             console.error(e);
           }
+          
           setModalOpen(false);
         }}>Save</button>
     </form>

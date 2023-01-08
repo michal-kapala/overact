@@ -19,7 +19,7 @@ export default function DashboardPage() {
   // auth
   const { data: session, status } = useSession()
   
-  // product categories (should be in getServerSideProps??)
+  // product categories
   const { isLoading: isCategoriesLoading, data: categories } = useCategories();
 
   // UI states
@@ -83,7 +83,7 @@ export default function DashboardPage() {
               { activeTab == tabs.dashboard ? <DashboardPanel /> : <div/> }
               { activeTab == tabs.orders ? <OrderPanel /> : <div/> }
               {
-                activeTab == tabs.products 
+                activeTab == tabs.products
                   ?
                   <ProductPanel 
                     categories={categories?.categories ?? []}
@@ -94,7 +94,7 @@ export default function DashboardPage() {
                   <div/>
               }
               {
-                activeTab == tabs.categories 
+                activeTab == tabs.categories
                   ?
                   <CategoryPanel 
                     modalOpen={addCategoryModalOpen}
@@ -104,7 +104,7 @@ export default function DashboardPage() {
                   <div/>
               }
               {
-                activeTab == tabs.colors 
+                activeTab == tabs.colors
                   ?
                   <ColorPanel
                     modalOpen={addColorModalOpen}
