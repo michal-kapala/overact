@@ -134,7 +134,7 @@ Customizable GraphQL configuration is located at [`src/graphql/*`](https://githu
 ### Supabase
 While GraphQL API integrates with Prisma for database access, Supabase Storage API needs direct interaction. To avoid unnecessary file transfer, content uploading and deletion happens client-side.
 
-Protected pages can make requests to [`/api/supabase/storage`](https://github.com/michal-kapala/overact/blob/main/pages/api/supabase/storage.ts) to retrieve `anon` API key and CDN base URL needed for [Supabase JS](https://supabase.com/docs/reference/javascript/introduction) API use.
+Protected pages can retrieve `anon` API key and CDN base URL needed for [Supabase JS API](https://supabase.com/docs/reference/javascript/introduction) calls using `getServerSideProps`.
 
 Note that this approach utilizes anonymous user authentication to Supabase and therefore is not intended for regular users' file access.
 

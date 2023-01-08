@@ -14,10 +14,32 @@ import ColorPanel from '../src/components/dashboard/panels/ColorPanel'
 import SizePanel from '../src/components/dashboard/panels/SizePanel'
 import { useCategories } from '../src/graphql/queries/Category/categories'
 import type { OveractUser } from '../src/types/OveractUser'
+import { SessionContextProvider } from '@supabase/auth-helpers-react'
+import { createClient } from '@supabase/supabase-js';
 
-export default function DashboardPage() {
+/**
+ * Supabase Client data fetched from the server.
+ */
+interface DashboardProps {
+  apiKey: string;
+  url: string;
+}
+
+export async function getServerSideProps(ctx: any) {
+  return {
+    props: {
+      url: process.env.NEXT_PUBLIC_SUPABASE_URL,
+      apiKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+    } as DashboardProps, 
+  }
+}
+
+export default function DashboardPage({ url, apiKey }: DashboardProps) {
   // auth
   const { data: session, status } = useSession()
+
+  // dashboard-scoped supabase client
+  const supabaseClient = createClient(url, apiKey);
   
   // product categories
   const { isLoading: isCategoriesLoading, data: categories } = useCategories();
@@ -48,7 +70,9 @@ export default function DashboardPage() {
   if(status === "authenticated" && userCast.role === "ADMIN")
   {
     return (
-      <>
+      <SessionContextProvider
+        supabaseClient={supabaseClient}
+      >
         <div>
           <Head>
             <title>Dashboard | Overact</title>
@@ -117,7 +141,7 @@ export default function DashboardPage() {
             </main>
           </div>
         </div>
-      </>
+      </SessionContextProvider>
     );
   }
   if(status === "unauthenticated" || (status === "authenticated" && userCast.role == "USER")) {

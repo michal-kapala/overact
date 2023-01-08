@@ -5,8 +5,7 @@ import CategoryCombo from '../../global/controls/CategoryCombo';
 import ImageUpload from '../../global/controls/ImageUpload';
 import type { Category, CategoryCreateNestedOneWithoutProductsInput, CategoryWhereUniqueInput, ProductCreateInput } from '../../../../prisma/generated/type-graphql';
 import { useCreateOneProduct } from '../../../graphql/mutations/Product/createOneProduct';
-import { StorageResponse } from '../../../types/StorageResponse';
-import { createClient } from '@supabase/supabase-js';
+import { useSupabaseClient } from '@supabase/auth-helpers-react'
 import { v4 as uuidv4 } from 'uuid';
 
 interface AddProductFormProps {
@@ -30,6 +29,9 @@ export default function AddProductForm({ categories, setModalOpen }: AddProductF
 
   // image file
   const [image, setImage] = useState<File>();
+
+  // supabase client
+  const supabase = useSupabaseClient();
 
   // mutation hook
   const {data, status, mutate} = useCreateOneProduct();
@@ -74,16 +76,8 @@ export default function AddProductForm({ categories, setModalOpen }: AddProductF
         type='button'
         disabled={name.length == 0 || skuId.length == 0 || price <= 0 || image === undefined}
         onClick={async () => {
-          // get api key and supabase storage base url
-          const response = await fetch('/api/supabase/storage');
           try {
-            const supaEnvs = await response.json() as StorageResponse;
-            if(supaEnvs.url && supaEnvs.key && image != undefined) {
-              // upload the image to Supabase Storage bucket
-              // might want to save the client and use useSupabaseClient instead
-              // https://supabase.com/docs/guides/auth/auth-helpers/nextjs#basic-setup
-              const supabase = createClient(supaEnvs.url, supaEnvs.key);
-
+            if(image != undefined) {           
               const { data: uploadData, error } = await supabase
                 .storage
                 .from('product-images')
@@ -104,15 +98,11 @@ export default function AddProductForm({ categories, setModalOpen }: AddProductF
                 }
               } as CategoryCreateNestedOneWithoutProductsInput;
 
-              // construct the full image URI
-              // this might get subbed in future by an image loader
-              const imageURI = `${supaEnvs.url}/storage/v1/object/public/product-images/${uploadData.path}`
-
               const data = {
                 skuId,
                 name,
                 price,
-                image: imageURI,
+                image: uploadData.path,
                 category: catNested,
               } as ProductCreateInput;
               
