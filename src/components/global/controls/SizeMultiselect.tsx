@@ -4,49 +4,45 @@ import Stack from "@mui/material/Stack";
 import { Autocomplete, TextField } from "@mui/material";
 import { ThemeProvider } from '@mui/material/styles';
 import { theme } from "../../mui/theme";
-import { Color } from "../../../../prisma/generated/type-graphql";
+import { Size } from "../../../../prisma/generated/type-graphql";
 
-interface ColorMultiselectProps {
+interface SizeMultiselectProps {
   label: string,
   /**
    * Selected data state.
    */
-  input: Color[],
+  input: Size[],
   /**
    * Selected data setter.
    */
   setInput: Function,
   /**
-   * Color listing.
+   * Size listing.
    */
-  colors: Color[]
+  sizes: Size[],
 }
 
-function compColors(a: Color, b: Color): number {
+function compSizes(a: Size, b: Size): number {
   if(a.name < b.name) return -1;
   else if (a.name === b.name) return 0;
   else return 1;
 }
 
-export default function ColorMultiselect(
-  { label, input, setInput, colors }: ColorMultiselectProps
+export default function SizeMultiselect(
+  { label, input, setInput, sizes }: SizeMultiselectProps
 ) {
 
-  // fallback color
-  const defaultColor = { id:"", name:"", rgb: "#ffffff" } as Color;
-
   // selected autocomplete option
-  const [selected, setSelected] = useState<Color>(
-    defaultColor
-    //colors.sort((a,b) => compColors(a,b))[0]
+  const [selected, setSelected] = useState(
+    sizes.sort((a,b) => compSizes(a,b))[0]
   );
 
   // Controlled Autocomplete text (see MUI docs)
   const [inputValue, setInputValue] = useState('');
 
   const defaultProps = {
-    options: colors,
-    getOptionLabel: (option: Color) => option.name
+    options: sizes.sort((a,b) => compSizes(a,b)),
+    getOptionLabel: (option: Size) => option.name
   };
 
   return (
@@ -56,12 +52,10 @@ export default function ColorMultiselect(
           <div className="w-full">
             <Autocomplete
               {...defaultProps}
-              id="color-autocomplete"
+              id="size-autocomplete"
               value={selected}
-              onChange={(event: any, newValue: Color| null) => {
-                const sorted = colors.sort((a,b) => compColors(a,b));
-                setSelected(newValue ?? defaultColor)
-                setInputValue("");
+              onChange={(event: any, newValue: Size | null) => {
+                setSelected(newValue ?? sizes.sort((a,b) => compSizes(a,b))[0])
               }}
               inputValue={inputValue}
               onInputChange={(event, newInputValue) => {
@@ -74,8 +68,8 @@ export default function ColorMultiselect(
           </div>
           <button className="items-center justify-center rounded-md border border-transparent bg-blue-600 disabled:bg-gray-500 ml-1 px-4 py-1 text-base font-medium text-white hover:bg-blue-700"
             type="button" 
-            // max # of colors
-            disabled={input.includes(selected) || selected.name === ''}
+            // max # of sizes
+            disabled={input.includes(selected)}
             onClick={() => {
               setInput([...input, selected]);
             }}>

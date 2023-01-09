@@ -3,10 +3,10 @@ import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Layout } from '../src/components/global/Layout';
-import { CTA } from '../src/components/CTA'
-import { PageHeader } from '../src/components/PageHeader'
-import ProductCategoriesGrid from '../src/components/ProductCategoriesGrid'
-import ProductRow from '../src/components/ProductRow'
+import { CTA } from '../src/components/homepage/CTA'
+import { PageHeader } from '../src/components/homepage/PageHeader'
+import ProductCategoriesGrid from '../src/components/homepage/ProductCategoriesGrid'
+import ProductRow from '../src/components/homepage/ProductRow'
 
 const Home: NextPage = () => {
 

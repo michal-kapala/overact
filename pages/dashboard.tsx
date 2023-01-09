@@ -18,6 +18,7 @@ import type { OveractUser } from '../src/types/OveractUser'
 import { SessionContextProvider } from '@supabase/auth-helpers-react'
 import { createClient } from '@supabase/supabase-js';
 import { useColors } from '../src/graphql/queries/Color/colors'
+import { useSizes } from '../src/graphql/queries/Size/sizes'
 
 /**
  * Supabase Client data fetched from the server.
@@ -54,6 +55,9 @@ export default function DashboardPage({ url, apiKey }: DashboardProps) {
   // colors
   const { isLoading: isColorsLoading, data: colors } = useColors();
 
+  // sizes
+  const { isLoading: isSizesLoading, data: sizes } = useSizes();
+
   // products
   const {isLoading: isProductsLoading, data: products} = useProducts();
 
@@ -65,7 +69,7 @@ export default function DashboardPage({ url, apiKey }: DashboardProps) {
   const [addColorModalOpen, setAddColorModalOpen] = useState(false);
   const [addSizeModalOpen, setAddSizeModalOpen] = useState(false);
 
-  if(isCategoriesLoading || isProductsLoading || isColorsLoading) {
+  if(isCategoriesLoading || isProductsLoading || isColorsLoading || isSizesLoading) {
     return (
       <>
         <Head>
@@ -126,6 +130,7 @@ export default function DashboardPage({ url, apiKey }: DashboardProps) {
                   <ProductPanel 
                     categories={categories?.categories ?? []}
                     colors={colors?.colors ?? []}
+                    sizes={sizes?.sizes ?? [] }
                     modalOpen={addProductModalOpen}
                     setModalOpen={setAddProductModalOpen}
                   />
@@ -154,11 +159,12 @@ export default function DashboardPage({ url, apiKey }: DashboardProps) {
               }
               {
                 activeTab == tabs.sizes
-                  ? <SizePanel
-                      categories={categories?.categories ?? []}
-                      modalOpen={addSizeModalOpen}
-                      setModalOpen={setAddSizeModalOpen}
-                    />
+                  ?
+                  <SizePanel
+                    categories={categories?.categories ?? []}
+                    modalOpen={addSizeModalOpen}
+                    setModalOpen={setAddSizeModalOpen}
+                  />
                   :
                   <div/>
               }

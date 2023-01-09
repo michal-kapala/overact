@@ -46,8 +46,8 @@ export default function AddColorForm({ setModalOpen, categories }: AddSizeFormPr
 
       <div className="py-4">
         <CategoryCombo 
-            categories={categories}
-            setCategory={setCategory}
+          categories={categories}
+          setCategory={setCategory}
         />
       </div>
       
@@ -59,9 +59,9 @@ export default function AddColorForm({ setModalOpen, categories }: AddSizeFormPr
             name,
             size,
             category: {
-                connect: {
-                    id: category.id
-                }
+              connect: {
+                id: category.id
+              }
             }
           } as SizeCreateInput;
 

@@ -1,5 +1,5 @@
 import { request, gql } from "graphql-request";
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import { ColorCreateInput } from "../../../../prisma/generated/type-graphql";
 
 /**
@@ -22,7 +22,14 @@ mutation createOneColor($data: ColorCreateInput!) {
  * @returns Wrapped `useMutation` results with new color id.
  */
 export function useCreateOneColor() {
+  const client = useQueryClient();
   return useMutation('createOneColor', async (variables: ColorCreateVariables) => {
     return await request('http://localhost:3000/api/graphql', mutation, variables);
+  },
+  {
+    onSuccess: () => {
+      // invalidates and refetches colors
+      client.invalidateQueries('colors');
+    }
   });
 }

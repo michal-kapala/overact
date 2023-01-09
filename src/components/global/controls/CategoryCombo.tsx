@@ -12,7 +12,7 @@ export default function CategoryCombo({categories, setCategory}: CategoryComboPr
   
   // Only used if there are no categories in the db
   const stubCat = {
-    id: "stub",
+    id: "",
     name: "Default category",
     tags: [],
     sizeable: false,
