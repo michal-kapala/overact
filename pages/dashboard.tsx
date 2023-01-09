@@ -13,9 +13,11 @@ import CategoryPanel from '../src/components/dashboard/panels/CategoryPanel'
 import ColorPanel from '../src/components/dashboard/panels/ColorPanel'
 import SizePanel from '../src/components/dashboard/panels/SizePanel'
 import { useCategories } from '../src/graphql/queries/Category/categories'
+import { useProducts } from '../src/graphql/queries/Product/products'
 import type { OveractUser } from '../src/types/OveractUser'
 import { SessionContextProvider } from '@supabase/auth-helpers-react'
 import { createClient } from '@supabase/supabase-js';
+import { useColors } from '../src/graphql/queries/Color/colors'
 
 /**
  * Supabase Client data fetched from the server.
@@ -25,7 +27,12 @@ interface DashboardProps {
   url: string;
 }
 
-export async function getServerSideProps(ctx: any) {
+/**
+ * Returns Supabase Client data from the server.
+ * @param ctx Call context.
+ * @returns `Promise<DashboardProps>`
+ */
+export function getStaticProps(ctx: any) {
   return {
     props: {
       url: process.env.NEXT_PUBLIC_SUPABASE_URL,
@@ -44,6 +51,12 @@ export default function DashboardPage({ url, apiKey }: DashboardProps) {
   // product categories
   const { isLoading: isCategoriesLoading, data: categories } = useCategories();
 
+  // colors
+  const { isLoading: isColorsLoading, data: colors } = useColors();
+
+  // products
+  const {isLoading: isProductsLoading, data: products} = useProducts();
+
   // UI states
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeTab, setActiveTab] = useState(tabs.dashboard);
@@ -51,7 +64,7 @@ export default function DashboardPage({ url, apiKey }: DashboardProps) {
   const [addProductModalOpen, setAddProductModalOpen] = useState(false);
   const [addColorModalOpen, setAddColorModalOpen] = useState(false);
 
-  if(isCategoriesLoading) {
+  if(isCategoriesLoading || isProductsLoading || isColorsLoading) {
     return (
       <>
         <Head>
@@ -111,6 +124,7 @@ export default function DashboardPage({ url, apiKey }: DashboardProps) {
                   ?
                   <ProductPanel 
                     categories={categories?.categories ?? []}
+                    colors={colors?.colors ?? []}
                     modalOpen={addProductModalOpen}
                     setModalOpen={setAddProductModalOpen}
                   />

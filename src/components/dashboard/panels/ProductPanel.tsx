@@ -1,15 +1,16 @@
 import { Dialog } from "@headlessui/react";
 import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 import AddProductForm from "../forms/AddProductForm";
-import { Category } from "../../../../prisma/generated/type-graphql";
+import { Category, Color } from "../../../../prisma/generated/type-graphql";
 
 interface ProductsPanelProps {
   categories: Category[];
+  colors: Color[];
   modalOpen: boolean;
   setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function ProductPanel({ categories, setModalOpen, modalOpen }: ProductsPanelProps) {
+export default function ProductPanel({ categories, colors, setModalOpen, modalOpen }: ProductsPanelProps) {
   return (
     <>
       <div className="py-6">
@@ -56,7 +57,11 @@ export default function ProductPanel({ categories, setModalOpen, modalOpen }: Pr
                 <Dialog.Title>Add new product</Dialog.Title>
               </div>
               {/* Add product form */}
-              <AddProductForm categories={categories} setModalOpen={setModalOpen}/>
+              <AddProductForm 
+                categories={categories}
+                colors={colors}
+                setModalOpen={setModalOpen}
+              />
             </Dialog.Panel>
           </div>
         </div>

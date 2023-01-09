@@ -1,5 +1,5 @@
 import { request, gql } from "graphql-request";
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import { ProductCreateInput } from "../../../../prisma/generated/type-graphql";
 
 /**
@@ -23,7 +23,14 @@ mutation createOneProduct($data: ProductCreateInput!) {
  * @returns Wrapped useMutation results with new product id.
  */
 export function useCreateOneProduct() {
+  const client = useQueryClient();
   return useMutation('createOneProduct', async (variables: ProductCreateVariables) => {
     return await request('http://localhost:3000/api/graphql', mutation, variables);
+  },
+  {
+    onSuccess: () => {
+      // invalidates and refetches products
+      client.invalidateQueries('products');
+    }
   });
 }

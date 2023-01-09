@@ -10,6 +10,7 @@ export const permissions = shield(
       users: isAdmin,
       products: allow,
       categories: allow,
+      colors: isAdmin,
     },
     Mutation: {
       createOneProduct: isAdmin,

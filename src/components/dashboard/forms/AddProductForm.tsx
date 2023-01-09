@@ -3,17 +3,27 @@ import TextInput from '../../global/controls/TextInput';
 import PriceInput from '../../global/controls/PriceInput';
 import CategoryCombo from '../../global/controls/CategoryCombo';
 import ImageUpload from '../../global/controls/ImageUpload';
-import type { Category, CategoryCreateNestedOneWithoutProductsInput, CategoryWhereUniqueInput, ProductCreateInput } from '../../../../prisma/generated/type-graphql';
+import type {
+  Category,
+  CategoryCreateNestedOneWithoutProductsInput,
+  CategoryWhereUniqueInput,
+  Color,
+  ColorCreateNestedManyWithoutProductsInput,
+  ColorWhereUniqueInput,
+  ProductCreateInput
+} from '../../../../prisma/generated/type-graphql';
 import { useCreateOneProduct } from '../../../graphql/mutations/Product/createOneProduct';
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
 import { v4 as uuidv4 } from 'uuid';
+import ColorMultiselect from '../../global/controls/ColorMultiselect';
 
 interface AddProductFormProps {
-  categories: Category[]
-  setModalOpen: Function
+  categories: Category[];
+  colors: Color[];
+  setModalOpen: Function;
 }
 
-export default function AddProductForm({ categories, setModalOpen }: AddProductFormProps) {
+export default function AddProductForm({ categories, colors, setModalOpen }: AddProductFormProps) {
   
   // name field
   const [name, setName] = useState("");
@@ -26,6 +36,9 @@ export default function AddProductForm({ categories, setModalOpen }: AddProductF
 
   // category mapped for input
   const [category, setCategory] = useState<CategoryWhereUniqueInput>({id: "", name: ""});
+
+  // colors mapped for input
+  const [inputColors, setInputColors] = useState<Color[]>([]);
 
   // image file
   const [image, setImage] = useState<File>();
@@ -64,12 +77,21 @@ export default function AddProductForm({ categories, setModalOpen }: AddProductF
           setInput={setPrice}
         />
       </div>
-      <div className="p-4">
+      <div className="p-4 z-30">
         <CategoryCombo categories={categories} setCategory={setCategory}/>
       </div>
 
       <div className="">
         <ImageUpload setInput={setImage}/>
+      </div>
+
+      <div className="p-4 z-20">
+        <ColorMultiselect
+          label='Colors'
+          input={inputColors}
+          setInput={setInputColors}
+          colors={colors}
+        />
       </div>
 
       <button className="justify-center items-center rounded-md border border-transparent bg-blue-600 disabled:bg-gray-500 px-4 py-1 text-base font-medium text-white hover:bg-blue-700"
@@ -98,12 +120,22 @@ export default function AddProductForm({ categories, setModalOpen }: AddProductF
                 }
               } as CategoryCreateNestedOneWithoutProductsInput;
 
+              let colWhere = [] as ColorWhereUniqueInput[];
+              inputColors.forEach((col) => {
+                colWhere.push({ id: col.id } as ColorWhereUniqueInput);
+              });
+
+              const colNested = {
+                connect: colWhere
+              } as ColorCreateNestedManyWithoutProductsInput;
+
               const data = {
                 skuId,
                 name,
                 price,
                 image: uploadData.path,
                 category: catNested,
+                colors: colNested,
               } as ProductCreateInput;
               
               mutate({data});

@@ -6,6 +6,8 @@ import {
   CreateOneCategoryResolver,
   CreateOneColorResolver,
   FindManyCategoryResolver,
+  ProductRelationsResolver,
+  FindManyColorResolver,
 } from "../../prisma/generated/type-graphql";
 
 /**
@@ -17,9 +19,12 @@ export const resolvers = [
   // Product
   FindManyProductResolver,
   CreateOneProductResolver,
+  // THIS IS REQUIRED FOR NESTED QUERY RESOLUTION
+  ProductRelationsResolver,
   // Category
   FindManyCategoryResolver,
   CreateOneCategoryResolver,
   // Color
   CreateOneColorResolver,
+  FindManyColorResolver,
 ] as NonEmptyArray<Function>;

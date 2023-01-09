@@ -93,6 +93,7 @@ model Category {
   products      Product[]
   sizeable      Boolean   @default(false)
   colorable     Boolean   @default(false)
+  sizes         Size[]
 }
 
 // Product color model
@@ -106,7 +107,9 @@ model Color {
 // Product size model
 model Size {
   id            String    @id @default(cuid())
-  name          String    @unique
+  name          String
   size          String
+  category      Category? @relation(fields: [categoryId], references: [id])
+  categoryId    String
   products      Product[]
 }
