@@ -52,7 +52,7 @@ export default function ColorPanel({ modalOpen, setModalOpen }: ColorPanelProps)
               <div className="flex justify-center">
                 <Dialog.Title>Add new Color</Dialog.Title>
               </div>
-              {/* Add category form */}
+              {/* Add color form */}
               <AddColorForm setModalOpen={setModalOpen}/>
             </Dialog.Panel>
           </div>

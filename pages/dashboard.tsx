@@ -63,6 +63,7 @@ export default function DashboardPage({ url, apiKey }: DashboardProps) {
   const [addCategoryModalOpen, setAddCategoryModalOpen] = useState(false);
   const [addProductModalOpen, setAddProductModalOpen] = useState(false);
   const [addColorModalOpen, setAddColorModalOpen] = useState(false);
+  const [addSizeModalOpen, setAddSizeModalOpen] = useState(false);
 
   if(isCategoriesLoading || isProductsLoading || isColorsLoading) {
     return (
@@ -151,7 +152,16 @@ export default function DashboardPage({ url, apiKey }: DashboardProps) {
                   :
                   <div/>
               }
-              { activeTab == tabs.sizes ? <SizePanel /> : <div/> }
+              {
+                activeTab == tabs.sizes
+                  ? <SizePanel
+                      categories={categories?.categories ?? []}
+                      modalOpen={addSizeModalOpen}
+                      setModalOpen={setAddSizeModalOpen}
+                    />
+                  :
+                  <div/>
+              }
             </main>
           </div>
         </div>

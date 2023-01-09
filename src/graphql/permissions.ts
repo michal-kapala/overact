@@ -16,6 +16,7 @@ export const permissions = shield(
       createOneProduct: isAdmin,
       createOneCategory: isAdmin,
       createOneColor: isAdmin,
+      createOneSize: isAdmin,
     },
   },
   { allowExternalErrors: true, }
