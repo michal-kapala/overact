@@ -1,7 +1,36 @@
 import { Dialog } from "@headlessui/react";
-import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
+import Box from "@mui/material/Box";
+import { DataGrid } from '@mui/x-data-grid';
 import AddProductForm from "../forms/AddProductForm";
-import { Category, Color, Size } from "../../../../prisma/generated/type-graphql";
+import { Category, Color, Product, Size } from "../../../../prisma/generated/type-graphql";
+import { productColumns } from "../../mui/columns";
+import { ThemeProvider } from "@mui/system";
+import { theme } from "../../mui/theme";
+import { ProductsResult, useProducts } from "../../../graphql/queries/Product/products";
+
+/**
+ * Transforms products for table display.
+ * @param result `products` GraphQL query result
+ * @param url CDN base URL
+ * @returns 
+ */
+function transformProducts(result: ProductsResult | null, url: string): Product[] {
+  if(!result)
+    return [];
+
+  let queried = result.products ?? [];
+  let products: Product[] = [];
+  // build full image urls
+  queried.forEach((q) => {
+    products.push(
+      {
+        ...q,
+        image: `${url}/storage/v1/object/public/product-images/${q.image}`}
+    );
+  });
+
+  return products;
+}
 
 interface ProductsPanelProps {
   categories: Category[];
@@ -9,13 +38,20 @@ interface ProductsPanelProps {
   sizes: Size[];
   modalOpen: boolean;
   setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  storageUrl: string;
 }
 
-export default function ProductPanel({ categories, colors, sizes, setModalOpen, modalOpen }: ProductsPanelProps) {
+export default function ProductPanel(
+  { categories, colors, sizes, setModalOpen, modalOpen, storageUrl }: ProductsPanelProps
+) {
+
+  // products
+  const {isLoading, data: products} = useProducts();
+
   return (
     <>
       <div className="py-6">
-        <div className="flex flex-row max-w-7xl mx-auto px-4 sm:px-6 md:px-16 w-full">
+        <div className="flex flex-row max-w-7xl mx-auto px-4 sm:px-6 lg:py-6 md:px-16 w-full">
           <div className="flex flex-row w-full">
             <h1 className="text-5xl font-semibold text-gray-300">Products</h1>
           </div>
@@ -31,9 +67,31 @@ export default function ProductPanel({ categories, colors, sizes, setModalOpen, 
           
         </div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
-          {/* Replace with your content */}
-          <div className="py-4">
-            <div className="border-4 border-dashed border-gray-300 rounded-lg h-96" />
+          {/* Data table */}
+          <div className="py-4 text-white">
+            {
+              isLoading
+                ?
+                <h1>Data loading...</h1>
+                :
+                <ThemeProvider theme={theme}>
+                  <Box sx={{ height: 400, width: '100%' }}>
+                    <DataGrid
+                      rows={transformProducts(products ?? null, storageUrl)}
+                      columns={productColumns}
+                      pageSize={5}
+                      rowsPerPageOptions={[5]}
+                      checkboxSelection
+                      disableSelectionOnClick
+                      getRowHeight={() => 'auto'}
+                      sx={{ 
+                        color: 'text.primary',
+                        bgcolor: 'background.paper'
+                      }}
+                    />
+                  </Box>
+                </ThemeProvider>
+            }
           </div>
           {/* End replace */}
         </div>

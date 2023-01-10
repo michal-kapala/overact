@@ -58,9 +58,6 @@ export default function DashboardPage({ url, apiKey }: DashboardProps) {
   // sizes
   const { isLoading: isSizesLoading, data: sizes } = useSizes();
 
-  // products
-  const {isLoading: isProductsLoading, data: products} = useProducts();
-
   // UI states
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeTab, setActiveTab] = useState(tabs.dashboard);
@@ -69,7 +66,7 @@ export default function DashboardPage({ url, apiKey }: DashboardProps) {
   const [addColorModalOpen, setAddColorModalOpen] = useState(false);
   const [addSizeModalOpen, setAddSizeModalOpen] = useState(false);
 
-  if(isCategoriesLoading || isProductsLoading || isColorsLoading || isSizesLoading) {
+  if(isCategoriesLoading || isColorsLoading || isSizesLoading) {
     return (
       <>
         <Head>
@@ -130,9 +127,10 @@ export default function DashboardPage({ url, apiKey }: DashboardProps) {
                   <ProductPanel 
                     categories={categories?.categories ?? []}
                     colors={colors?.colors ?? []}
-                    sizes={sizes?.sizes ?? [] }
+                    sizes={sizes?.sizes ?? []}
                     modalOpen={addProductModalOpen}
                     setModalOpen={setAddProductModalOpen}
+                    storageUrl={url}
                   />
                   :
                   <div/>

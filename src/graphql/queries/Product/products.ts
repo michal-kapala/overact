@@ -6,7 +6,7 @@ import type { Product } from "../../../../prisma/generated/type-graphql";
 /**
  * Response type for 'products' query.
  */
-interface ProductsResult {
+export interface ProductsResult {
   products: Product[]
 }
 
@@ -22,6 +22,16 @@ query products {
           id
           name
           tags
+        }
+        colors {
+          id
+          name
+          rgb
+        }
+        sizes {
+          id
+          name
+          size
         }
     }
 }
