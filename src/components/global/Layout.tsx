@@ -1,8 +1,12 @@
-import { NavBar } from "./NavBar";
-import { Footer } from "./Footer";
-import React, { ReactNode, FC } from "react";
+import NavBar from "./NavBar";
+import Footer from "./Footer";
+import React, { ReactNode } from "react";
 
-export const Layout: FC<{children?: ReactNode}> = ({ children }) => {
+interface LayoutProps {
+  children? : ReactNode;
+}
+
+export default function Layout({ children }: LayoutProps) {
   return(
     <>
       {/* Page Container */}

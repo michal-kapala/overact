@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { navigation } from "../../types/navigation";
 
 interface DesktopSidebarProps {
@@ -13,10 +14,11 @@ export default function DesktopSidebar(props: DesktopSidebarProps) {
       {/* Sidebar component, swap this element with another sidebar if you like */}
       <div className="flex-1 flex flex-col min-h-0 bg-gray-800">
         <div className="flex justify-center items-center h-16 flex-shrink-0 px-4 bg-gray-900">
-          <img
-            className="h-8 w-auto"
+          <Image 
             src="/overact.png"
             alt="Overact"
+            width={120}
+            height={32}
           />
         </div>
         <div className="flex-1 flex flex-col overflow-y-auto">

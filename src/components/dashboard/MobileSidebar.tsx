@@ -1,6 +1,7 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { XIcon } from "@heroicons/react/outline";
 import { Fragment } from "react";
+import Image from 'next/image';
 import { navigation } from "../../types/navigation";
 
 interface MobileSidebarProps {
@@ -60,10 +61,11 @@ export default function MobileSidebar(
                 </div>
               </Transition.Child>
               <div className="flex-shrink-0 flex items-center px-4">
-                <img
-                  className="h-8 w-auto"
-                  src="https://tailwindui.com/img/logos/workflow-logo-indigo-500-mark-white-text.svg"
-                  alt="Workflow"
+                <Image 
+                  src="/overact.png"
+                  alt="Overact"
+                  width={120}
+                  height={32}
                 />
               </div>
               <div className="mt-5 flex-1 h-0 overflow-y-auto">

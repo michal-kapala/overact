@@ -1,22 +1,24 @@
-import { useSession, signIn, signOut } from "next-auth/react"
-import Link from 'next/link'
-import React, { Fragment, useState, FC, ReactNode } from "react";
+import React, { Fragment, useState, ReactNode } from "react";
+import Link from "next/link";
+import Image from "next/image";
 import { Menu, Transition } from "@headlessui/react";
+import { useSession, signIn, signOut } from "next-auth/react";
+import { OveractUser } from "../../types/OveractUser";
 
-export const NavBar: FC<{children?: ReactNode}> = () => {
+interface NavBarProps {
+  children?: ReactNode;
+}
+
+export default function NavBar({children}: NavBarProps) {
   // auth session
   const { data: session, status } = useSession()
+  const userCast = session?.user as OveractUser;
 
   // dropdown open
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   // search bar text
-  const [searchValue, setSearchValue] = useState("");
-
-  // searchbar input updates
-  function onSearchbarChange(event: any) {
-    setSearchValue(event.target.value);
-  }
+  const [searchValue, setSearchValue] = useState('');
 
   return(
     <>
@@ -29,7 +31,12 @@ export const NavBar: FC<{children?: ReactNode}> = () => {
               {/* Logo */}
               <Link href="/">
                 <a className="group inline-flex items-center text-center space-x-2 font-bold text-lg tracking-wide text-gray-700 hover:text-blue-600 active:text-gray-700">
-                  <img src="/overact.png" alt='Overact logo' className="flex scale-75"/>
+                  <Image 
+                    src="/overact.png"
+                    alt="Overact logo"
+                    width={431}
+                    height={115}
+                  />
                 </a>
               </Link>
               {/* Search bar */}
@@ -42,7 +49,7 @@ export const NavBar: FC<{children?: ReactNode}> = () => {
                     type="search" 
                     value={searchValue}
                     placeholder="Search"
-                    onChange={onSearchbarChange}
+                    onChange={(e) => setSearchValue(e.target.value)}
                     className="w-full block appearance-none rounded-lg border-none outline-none focus:outline-none bg-transparent text-base text-slate-900 transition placeholder:text-slate-400 sm:text-sm sm:leading-6"
                   />
                 </div>
@@ -52,9 +59,9 @@ export const NavBar: FC<{children?: ReactNode}> = () => {
 
             {/* Right Section */}
             <div className="flex items-center space-x-1 lg:space-x-5">
-              {/* Desktop Navigation */}
-              <nav className="hidden lg:flex lg:items-center lg:space-x-2">
-                <Link href="/api/graphql">
+              {/* Desktop Navigation (unused)*/}
+              {/* <nav className="hidden lg:flex lg:items-center lg:space-x-2">
+                <Link href="/">
                   <a className="text-sm font-medium flex items-center space-x-2 px-3 py-2 rounded text-gray-600 border border-transparent hover:text-blue-500 hover:bg-blue-50 hover:border-blue-50 active:bg-blue-100 active:border-blue-100">
                     <svg fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" className="opacity-50 hi-solid hi-home inline-block w-5 h-5"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" /></svg>
                     <span>Home</span>
@@ -73,12 +80,12 @@ export const NavBar: FC<{children?: ReactNode}> = () => {
                   </a>
                 </Link>
                 <Link href="/">
-                  <a href="#" className="text-sm font-medium flex items-center space-x-2 px-3 py-2 rounded text-gray-600 border border-transparent hover:text-blue-500 hover:bg-blue-50 hover:border-blue-50 active:bg-blue-100 active:border-blue-100">
+                  <a className="text-sm font-medium flex items-center space-x-2 px-3 py-2 rounded text-gray-600 border border-transparent hover:text-blue-500 hover:bg-blue-50 hover:border-blue-50 active:bg-blue-100 active:border-blue-100">
                     <svg fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" className="opacity-50 hi-solid hi-cog inline-block w-5 h-5"><path fillRule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clipRule="evenodd" /></svg>
                     <span>Settings</span>
                   </a>
                 </Link>
-              </nav>
+              </nav> */}
               {/* END Desktop Navigation */}
 
               <Menu as="div" className="relative inline-block">
@@ -107,48 +114,29 @@ export const NavBar: FC<{children?: ReactNode}> = () => {
                         >
                           <Menu.Items className="absolute right-0 origin-top-right mt-2 w-48 shadow-xl rounded z-1">
                             <div className="bg-white ring-1 ring-black ring-opacity-5 rounded divide-y divide-gray-100">
-                              <div className="p-2 space-y-1">
-                                <Menu.Item>
-                                  {({ active }) => (
-                                    <a
-                                      href="#"
-                                      className={`flex items-center space-x-2 rounded py-2 px-3 text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-700 ${
-                                        active ? "text-gray-700 bg-gray-100" : "text-gray-600 hover:bg-gray-100 hover:text-gray-700 focus:outline-none focus:bg-gray-100 focus:text-gray-700"
-                                      }`}
-                                    >
-                                      <svg className="hi-solid hi-user-circle inline-block w-5 h-5 opacity-50" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z" clipRule="evenodd" /></svg>
-                                      <span>Profile</span>
-                                    </a>
-                                  )}
-                                </Menu.Item>
-                                <Menu.Item>
-                                  {({ active }) => (
-                                    <a
-                                      href="#"
-                                      className={`flex items-center space-x-2 rounded py-2 px-3 text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-700 ${
-                                        active ? "text-gray-700 bg-gray-100" : "text-gray-600 hover:bg-gray-100 hover:text-gray-700 focus:outline-none focus:bg-gray-100 focus:text-gray-700"
-                                      }`}
-                                    >
-                                      <svg className="hi-solid hi-inbox inline-block w-5 h-5 opacity-50" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M5 3a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2V5a2 2 0 00-2-2H5zm0 2h10v7h-2l-1 2H8l-1-2H5V5z" clipRule="evenodd" /></svg>
-                                      <span>Inbox</span>
-                                    </a>
-                                  )}
-                                </Menu.Item>
-                              </div>
-                              <div className="p-2 space-y-1">
-                                <Menu.Item>
-                                  {({ active }) => (
-                                    <a
-                                      className={`flex items-center space-x-2 rounded py-2 px-3 text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-700 ${
-                                        active ? "text-gray-700 bg-gray-100" : "text-gray-600 hover:bg-gray-100 hover:text-gray-700 focus:outline-none focus:bg-gray-100 focus:text-gray-700"
-                                      }`}
-                                    >
-                                      <svg className="hi-solid hi-cog inline-block w-5 h-5 opacity-50" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clipRule="evenodd" /></svg>
-                                      <span>Settings</span>
-                                    </a>
-                                  )}
-                                </Menu.Item>
-                              </div>
+                              {
+                                userCast && userCast.role === "ADMIN"
+                                  ?
+                                  <div className="p-2 space-y-1">
+                                    <Menu.Item>
+                                      {({ active }) => (
+                                        <Link href='/dashboard'>
+                                          <a onClick={() => {}}
+                                            className={`flex items-center space-x-2 rounded py-2 px-3 text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-700 ${
+                                              active ? "text-gray-700 bg-gray-100" : "text-gray-600 hover:bg-gray-100 hover:text-gray-700 focus:outline-none focus:bg-gray-100 focus:text-gray-700"
+                                            }`}
+                                          >
+                                            <svg className="hi-solid hi-cog inline-block w-5 h-5 opacity-50" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clipRule="evenodd" /></svg>
+                                            <span>Dashboard</span> 
+                                          </a>
+                                        </Link>
+                                      )}
+                                    </Menu.Item>
+                                  </div>
+                                  :
+                                  <div></div>
+                              }
+                            
                               <div className="p-2 space-y-1">
                                 <Menu.Item>
                                   {({ active }) => (

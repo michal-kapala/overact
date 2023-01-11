@@ -10,6 +10,9 @@ export interface ProductsResult {
   products: Product[]
 }
 
+/**
+ * GraphQL `products` query.
+ */
 const query = gql`
 query products {
     products {
@@ -39,10 +42,16 @@ query products {
 
 /**
  * Fetches all products.
+ * @returns `ProductsResult`
+ */
+export async function queryProducts() {
+  return await request('http://localhost:3000/api/graphql', query);
+}
+
+/**
+ * Wrapper for `useQuery` of `products`.
  * @returns Wrapped useQuery results with product list
  */
 export function useProducts(): UseQueryResult<ProductsResult, unknown> {
-  return useQuery('products', async () => {
-    return await request('http://localhost:3000/api/graphql', query);
-  });
+  return useQuery('products', queryProducts);
 }

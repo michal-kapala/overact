@@ -1,11 +1,9 @@
-import { FC } from 'react'
-
 type PageHeaderProps = {
   title: string,
   subtitle: string
 }
 
-export const PageHeader: FC<PageHeaderProps> = ({title, subtitle}) => {
+export default function PageHeader({title, subtitle}: PageHeaderProps) {
   return (
     <div className="bg-gray-50">
       <div className="space-y-16 container xl:max-w-7xl mx-auto px-4 py-8 lg:px-8 lg:py-0 lg:pt-16 lg:pb-8">

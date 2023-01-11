@@ -1,6 +1,4 @@
-import { FC } from 'react'
-
-export const CTA: FC<any> = () => {
+export default function CTA() {
   return (
     <>
       <div className="bg-gray-50 items-center mx-auto">
