@@ -16,7 +16,9 @@ query sizes {
         id
         name
         size
-        categoryId
+        category {
+          name
+        }
     }
 }
 `;

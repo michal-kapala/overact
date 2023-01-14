@@ -114,3 +114,22 @@ export function BooleanRenderer(
     />
   }
 }
+
+/**
+ * Renders hex color with its visual representation.
+ * @param params 
+ * @returns A span of color square and its hex value
+ */
+export function ColorRenderer(
+  params: GridRenderCellParams<any>
+): JSX.Element | null  {
+  return <span className="flex flex-row justify-center items-center">
+    {/** Colored square */}
+    <div
+      style={{background: params.value, borderWidth: 2, borderColor: "black"}}
+      className='mr-4 flex-shrink-0 h-6 w-6'
+    />
+    {/** Hex value */}
+    <p>{params.value}</p>
+  </span>
+}

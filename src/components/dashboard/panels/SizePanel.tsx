@@ -1,15 +1,20 @@
 import { Dialog } from "@headlessui/react";
 import AddSizeForm from "../forms/AddSizeForm";
 import { useCategories } from "../../../graphql/queries/Category/categories";
+import DataTable from "../../global/controls/DataTable";
+import { sizeColumns } from "../../mui/columns";
+import { Size } from "../../../../prisma/generated/type-graphql";
 
 interface SizePanelProps {
+  sizes: Size[];
+  isLoading: boolean;
   modalOpen: boolean;
   setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   apiUrl: string;
 }
 
 export default function SizePanel(
-  { modalOpen, setModalOpen, apiUrl }: SizePanelProps
+  { sizes, isLoading, modalOpen, setModalOpen, apiUrl }: SizePanelProps
 ) {
   
   // product categories
@@ -18,7 +23,7 @@ export default function SizePanel(
   return (
     <>
       <div className="py-6">
-        <div className="flex flex-row max-w-7xl mx-auto px-4 sm:px-6 md:px-16 w-full">
+        <div className="flex flex-row max-w-7xl mx-auto px-4 sm:px-6 lg:py-6 md:px-16 w-full">
           <div className="flex flex-row w-full">
             <h1 className="text-5xl font-semibold text-gray-300">Sizes</h1>
           </div>
@@ -34,11 +39,19 @@ export default function SizePanel(
           
         </div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
-          {/* Replace with your content */}
-          <div className="py-4">
-            <div className="border-4 border-dashed border-gray-300 rounded-lg h-96" />
+          {/* Data table */}
+          <div className="py-4 text-white">
+            {
+              isLoading || isCategoriesLoading
+                ?
+                <h1>Data loading...</h1>
+                :
+                <DataTable
+                  rows={sizes}
+                  columns={sizeColumns}
+                />
+            }
           </div>
-          {/* End replace */}
         </div>
       </div>
 

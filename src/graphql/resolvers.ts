@@ -10,6 +10,7 @@ import {
   FindManyColorResolver,
   CreateOneSizeResolver,
   FindManySizeResolver,
+  SizeRelationsResolver,
 } from "../../prisma/generated/type-graphql";
 
 /**
@@ -32,4 +33,5 @@ export const resolvers = [
   // Size
   FindManySizeResolver,
   CreateOneSizeResolver,
+  SizeRelationsResolver,
 ] as NonEmptyArray<Function>;

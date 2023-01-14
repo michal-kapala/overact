@@ -23,7 +23,8 @@ function transformProducts(result: ProductsResult | null, url: string): Product[
     products.push(
       {
         ...q,
-        image: `${url}/storage/v1/object/public/product-images/${q.image}`}
+        image: `${url}/storage/v1/object/public/product-images/${q.image}`
+      }
     );
   });
 

@@ -58,6 +58,7 @@ export default function DashboardPage({ cdnUrl, cdnAnonKey, apiUrl }: DashboardP
   // dashboard-scoped supabase client
   const supabaseClient = createClient(cdnUrl, cdnAnonKey);
 
+  // TODO: the page should be fully protected so that the queries happen only for admin users
   // colors
   const { isLoading: isColorsLoading, data: colors } = useColors(apiUrl);
 
@@ -156,6 +157,8 @@ export default function DashboardPage({ cdnUrl, cdnAnonKey, apiUrl }: DashboardP
                 activeTab == tabs.colors
                   ?
                   <ColorPanel
+                    colors={colors?.colors ?? []}
+                    isLoading={isColorsLoading}
                     modalOpen={addColorModalOpen}
                     setModalOpen={setAddColorModalOpen}
                     apiUrl={apiUrl}
@@ -167,6 +170,8 @@ export default function DashboardPage({ cdnUrl, cdnAnonKey, apiUrl }: DashboardP
                 activeTab == tabs.sizes
                   ?
                   <SizePanel
+                    sizes={sizes?.sizes ?? []}
+                    isLoading={isSizesLoading}
                     modalOpen={addSizeModalOpen}
                     setModalOpen={setAddSizeModalOpen}
                     apiUrl={apiUrl}
