@@ -8,10 +8,11 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 
 interface AddCategoryFormProps {
-  setModalOpen: Function
+  setModalOpen: Function;
+  apiUrl: string;
 }
 
-export default function AddCategoryForm({ setModalOpen }: AddCategoryFormProps) {
+export default function AddCategoryForm({ setModalOpen, apiUrl }: AddCategoryFormProps) {
   
   // name field
   const [name, setName] = useState("");
@@ -26,7 +27,7 @@ export default function AddCategoryForm({ setModalOpen }: AddCategoryFormProps) 
   const [colorable, setColorable] = useState(false);
 
   // mutation hook
-  const {data, status, mutate} = useCreateOneCategory();
+  const {data, status, mutate} = useCreateOneCategory(apiUrl);
 
   return (
     <form className="flex flex-col justify-center">

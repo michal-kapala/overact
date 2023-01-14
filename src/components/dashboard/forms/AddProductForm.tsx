@@ -26,9 +26,12 @@ interface AddProductFormProps {
   colors: Color[];
   sizes: Size[];
   setModalOpen: Function;
+  apiUrl: string;
 }
 
-export default function AddProductForm({ categories, colors, sizes, setModalOpen }: AddProductFormProps) {
+export default function AddProductForm(
+  { categories, colors, sizes, setModalOpen, apiUrl }: AddProductFormProps
+) {
   
   // name field
   const [name, setName] = useState("");
@@ -63,7 +66,7 @@ export default function AddProductForm({ categories, colors, sizes, setModalOpen
   const supabase = useSupabaseClient();
 
   // mutation hook
-  const {data, status, mutate} = useCreateOneProduct();
+  const {data, status, mutate} = useCreateOneProduct(apiUrl);
 
   return (
     <form className="flex flex-col justify-center">

@@ -4,9 +4,10 @@ import AddCategoryForm from "../forms/AddCategoryForm";
 interface CategoryPanelProps {
   modalOpen: boolean;
   setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  apiUrl: string;
 }
 
-export default function CategoryPanel({ modalOpen, setModalOpen }: CategoryPanelProps) {
+export default function CategoryPanel({ modalOpen, setModalOpen, apiUrl }: CategoryPanelProps) {
   return (
     <>
       <div className="py-6">
@@ -53,7 +54,10 @@ export default function CategoryPanel({ modalOpen, setModalOpen }: CategoryPanel
                 <Dialog.Title>Add new Category</Dialog.Title>
               </div>
               {/* Add category form */}
-              <AddCategoryForm setModalOpen={setModalOpen} />
+              <AddCategoryForm
+                setModalOpen={setModalOpen}
+                apiUrl={apiUrl}
+              />
             </Dialog.Panel>
           </div>
         </div>

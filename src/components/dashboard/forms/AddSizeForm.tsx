@@ -5,11 +5,12 @@ import CategoryCombo from "../../global/controls/CategoryCombo";
 import { useCreateOneSize } from "../../../graphql/mutations/Size/createOneSize";
 
 interface AddSizeFormProps {
-  setModalOpen: Function
-  categories: Category[]
+  setModalOpen: Function;
+  categories: Category[];
+  apiUrl: string;
 }
 
-export default function AddColorForm({ setModalOpen, categories }: AddSizeFormProps) {
+export default function AddColorForm({ setModalOpen, categories, apiUrl }: AddSizeFormProps) {
   // size name
   const [name, setName] = useState("");
 
@@ -20,7 +21,7 @@ export default function AddColorForm({ setModalOpen, categories }: AddSizeFormPr
   const [category, setCategory] = useState<Category>(categories[0]);
 
   // mutation hook
-  const { mutate } = useCreateOneSize();
+  const { mutate } = useCreateOneSize(apiUrl);
 
   return (
     <form className="flex flex-col justify-center">

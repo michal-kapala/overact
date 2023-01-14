@@ -21,10 +21,10 @@ mutation createOneCategory($data: CategoryCreateInput!) {
  * Creates a new category.
  * @returns Wrapped useMutation results with new category id.
  */
-export function useCreateOneCategory() {
+export function useCreateOneCategory(apiUrl: string) {
   const client = useQueryClient();
   return useMutation('createOneCategory', async (variables: CategoryCreateVariables) => {
-    return await request('http://localhost:3000/api/graphql', mutation, variables);
+    return await request(apiUrl, mutation, variables);
   },
   {
     onSuccess: () => {

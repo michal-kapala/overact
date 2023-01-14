@@ -44,14 +44,14 @@ query products {
  * Fetches all products.
  * @returns `ProductsResult`
  */
-export async function queryProducts() {
-  return await request('http://localhost:3000/api/graphql', query);
+export async function queryProducts(apiUrl: string) {
+  return await request(apiUrl, query);
 }
 
 /**
  * Wrapper for `useQuery` of `products`.
  * @returns Wrapped useQuery results with product list
  */
-export function useProducts(): UseQueryResult<ProductsResult, unknown> {
-  return useQuery('products', queryProducts);
+export function useProducts(apiUrl: string): UseQueryResult<ProductsResult, unknown> {
+  return useQuery('products', () => queryProducts(apiUrl));
 }

@@ -14,8 +14,8 @@ query users {
  * Fetches all users.
  * @returns useQuery results with user list
  */
-export function useUsers() {
+export function useUsers(apiUrl: string) {
   return useQuery('users', async () => {
-    return await request('http://localhost:3000/api/graphql', query);
+    return await request(apiUrl, query);
   });
 }

@@ -20,42 +20,53 @@ import { useColors } from '../src/graphql/queries/Color/colors'
 import { useSizes } from '../src/graphql/queries/Size/sizes'
 
 /**
- * Supabase Client data fetched from the server.
+ * API data fetched from the server.
  */
 interface DashboardProps {
-  apiKey: string;
-  url: string;
+  cdnAnonKey: string;
+  cdnUrl: string;
+  apiUrl: string;
 }
 
 /**
- * Returns Supabase Client data from the server.
+ * Returns API data from the server.
  * @param ctx Call context.
  * @returns `Promise<DashboardProps>`
  */
-export function getStaticProps(ctx: any) {
+export function getServerSideProps(ctx: any) {
+  // build API url (client-side appUrl is /)
+  const host = ctx.req.headers['host'];
+  const apiUrl = host !== '/'
+    // server query
+    ? `http://${host}/api/graphql`
+    // client query
+    : `${host}api/graphql`;
+
   return {
     props: {
-      url: process.env.NEXT_PUBLIC_SUPABASE_URL,
-      apiKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+      cdnUrl: process.env.NEXT_PUBLIC_SUPABASE_URL,
+      cdnAnonKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+      // next app base URL passed in 'Host' header
+      apiUrl,
     } as DashboardProps, 
   }
 }
 
-export default function DashboardPage({ url, apiKey }: DashboardProps) {
+export default function DashboardPage({ cdnUrl, cdnAnonKey, apiUrl }: DashboardProps) {
   // auth
   const { data: session, status } = useSession()
 
   // dashboard-scoped supabase client
-  const supabaseClient = createClient(url, apiKey);
+  const supabaseClient = createClient(cdnUrl, cdnAnonKey);
   
   // product categories
-  const { isLoading: isCategoriesLoading, data: categories } = useCategories();
+  const { isLoading: isCategoriesLoading, data: categories } = useCategories(apiUrl);
 
   // colors
-  const { isLoading: isColorsLoading, data: colors } = useColors();
+  const { isLoading: isColorsLoading, data: colors } = useColors(apiUrl);
 
   // sizes
-  const { isLoading: isSizesLoading, data: sizes } = useSizes();
+  const { isLoading: isSizesLoading, data: sizes } = useSizes(apiUrl);
 
   // UI states
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -129,7 +140,8 @@ export default function DashboardPage({ url, apiKey }: DashboardProps) {
                     sizes={sizes?.sizes ?? []}
                     modalOpen={addProductModalOpen}
                     setModalOpen={setAddProductModalOpen}
-                    storageUrl={url}
+                    storageUrl={cdnUrl}
+                    apiUrl={apiUrl}
                   />
                   :
                   <div/>
@@ -140,6 +152,7 @@ export default function DashboardPage({ url, apiKey }: DashboardProps) {
                   <CategoryPanel 
                     modalOpen={addCategoryModalOpen}
                     setModalOpen={setAddCategoryModalOpen}
+                    apiUrl={apiUrl}
                   />
                   :
                   <div/>
@@ -150,6 +163,7 @@ export default function DashboardPage({ url, apiKey }: DashboardProps) {
                   <ColorPanel
                     modalOpen={addColorModalOpen}
                     setModalOpen={setAddColorModalOpen}
+                    apiUrl={apiUrl}
                   />
                   :
                   <div/>
@@ -161,6 +175,7 @@ export default function DashboardPage({ url, apiKey }: DashboardProps) {
                     categories={categories?.categories ?? []}
                     modalOpen={addSizeModalOpen}
                     setModalOpen={setAddSizeModalOpen}
+                    apiUrl={apiUrl}
                   />
                   :
                   <div/>

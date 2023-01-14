@@ -4,9 +4,10 @@ import AddColorForm from "../forms/AddColorForm";
 interface ColorPanelProps {
   modalOpen: boolean;
   setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  apiUrl: string;
 }
 
-export default function ColorPanel({ modalOpen, setModalOpen }: ColorPanelProps) {
+export default function ColorPanel({ modalOpen, setModalOpen, apiUrl }: ColorPanelProps) {
   return (
     <>
       <div className="py-6">
@@ -53,7 +54,10 @@ export default function ColorPanel({ modalOpen, setModalOpen }: ColorPanelProps)
                 <Dialog.Title>Add new Color</Dialog.Title>
               </div>
               {/* Add color form */}
-              <AddColorForm setModalOpen={setModalOpen}/>
+              <AddColorForm 
+                setModalOpen={setModalOpen}
+                apiUrl={apiUrl}
+              />
             </Dialog.Panel>
           </div>
         </div>

@@ -22,10 +22,10 @@ mutation createOneProduct($data: ProductCreateInput!) {
  * Creates a new product.
  * @returns Wrapped useMutation results with new product id.
  */
-export function useCreateOneProduct() {
+export function useCreateOneProduct(apiUrl: string) {
   const client = useQueryClient();
   return useMutation('createOneProduct', async (variables: ProductCreateVariables) => {
-    return await request('http://localhost:3000/api/graphql', mutation, variables);
+    return await request(apiUrl, mutation, variables);
   },
   {
     onSuccess: () => {

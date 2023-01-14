@@ -39,14 +39,15 @@ interface ProductsPanelProps {
   modalOpen: boolean;
   setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   storageUrl: string;
+  apiUrl: string;
 }
 
 export default function ProductPanel(
-  { categories, colors, sizes, setModalOpen, modalOpen, storageUrl }: ProductsPanelProps
+  { categories, colors, sizes, setModalOpen, modalOpen, storageUrl, apiUrl }: ProductsPanelProps
 ) {
 
   // products
-  const {isLoading, data: products} = useProducts();
+  const {isLoading, data: products} = useProducts(apiUrl);
 
   return (
     <>
@@ -121,6 +122,7 @@ export default function ProductPanel(
                 colors={colors}
                 sizes={sizes}
                 setModalOpen={setModalOpen}
+                apiUrl={apiUrl}
               />
             </Dialog.Panel>
           </div>

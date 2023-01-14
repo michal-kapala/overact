@@ -25,8 +25,8 @@ query sizes {
  * Fetches all sizes without nested category data.
  * @returns Wrapped useQuery results with size list
  */
-export function useSizes(): UseQueryResult<SizesResult, unknown> {
+export function useSizes(apiUrl: string): UseQueryResult<SizesResult, unknown> {
   return useQuery('sizes', async () => {
-    return await request('http://localhost:3000/api/graphql', query);
+    return await request(apiUrl, query);
   });
 }

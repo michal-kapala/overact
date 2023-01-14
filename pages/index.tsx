@@ -15,29 +15,43 @@ interface HomeProps {
   /**
    * CDN base url for image loader.
    */
-  url: string
+  cdnUrl: string;
+  /**
+   * Next.js API URL.
+   */
+  apiUrl: string;
 }
 
 /**
- * Server-side product fetching for SEO using `initialData` approach.
+ * First-paint SSR product fetching for SEO using `initialData` approach.
  * @param ctx 
  */
 export async function getServerSideProps(ctx: any) {
-  const result = await queryProducts();
+  // build API url (client-side appUrl is /)
+  const host = ctx.req.headers['host'];
+  const apiUrl = host !== '/'
+    // server query
+    ? `http://${host}/api/graphql`
+    // client query
+    : `${host}api/graphql`;
+  const result = await queryProducts(apiUrl);
   return {
     props: { 
       // products
       result,
-      // storage url
-      url: process.env.NEXT_PUBLIC_SUPABASE_URL }
+      // storage base url
+      cdnUrl: process.env.NEXT_PUBLIC_SUPABASE_URL,
+      // next app base url passed by referer
+      apiUrl,
+    }
   };
 }
 
-export default function Home({ result, url }: HomeProps) {
+export default function Home({ result, cdnUrl, apiUrl }: HomeProps) {
   // initial data passed
   const { data: prodResult }: UseQueryResult<ProductsResult, unknown> = useQuery({
     queryKey: ['products'],
-    queryFn: queryProducts,
+    queryFn: () => queryProducts(apiUrl),
     initialData: result,
   });
 
@@ -57,7 +71,7 @@ export default function Home({ result, url }: HomeProps) {
           <ProductRow 
             rowName='Trending'
             products={prodResult?.products ?? []}
-            url={url}
+            url={cdnUrl}
           />
         </div>
       </main>

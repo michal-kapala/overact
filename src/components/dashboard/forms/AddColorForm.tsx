@@ -7,10 +7,11 @@ import { ColorCreateInput } from "../../../../prisma/generated/type-graphql";
 import { ColorCreateVariables, useCreateOneColor } from "../../../graphql/mutations/Color/createOneColor";
 
 interface AddColorFormProps {
-  setModalOpen: Function
+  setModalOpen: Function;
+  apiUrl: string;
 }
 
-export default function AddColorForm({ setModalOpen }: AddColorFormProps) {
+export default function AddColorForm({ setModalOpen, apiUrl }: AddColorFormProps) {
   // color name
   const [name, setName] = useState("");
 
@@ -18,7 +19,7 @@ export default function AddColorForm({ setModalOpen }: AddColorFormProps) {
   const [color, setColor] = useColor("hex", "#FFFFFF");
 
   // mutation hook
-  const { mutate } = useCreateOneColor();
+  const { mutate } = useCreateOneColor(apiUrl);
 
   return (
     <form className="flex flex-col justify-center">

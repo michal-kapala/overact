@@ -24,8 +24,8 @@ query colors {
  * Fetches all colors.
  * @returns Wrapped useQuery results with color list
  */
-export function useColors(): UseQueryResult<ColorsResult, unknown> {
+export function useColors(apiUrl: string): UseQueryResult<ColorsResult, unknown> {
   return useQuery('colors', async () => {
-    return await request('http://localhost:3000/api/graphql', query);
+    return await request(apiUrl, query);
   });
 }

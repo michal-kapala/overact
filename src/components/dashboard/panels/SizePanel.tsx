@@ -5,10 +5,13 @@ import AddSizeForm from "../forms/AddSizeForm";
 interface SizePanelProps {
   modalOpen: boolean;
   setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  categories: Category[]
+  categories: Category[];
+  apiUrl: string;
 }
 
-export default function SizePanel({ modalOpen, setModalOpen, categories }: SizePanelProps) {
+export default function SizePanel(
+  { modalOpen, setModalOpen, categories, apiUrl }: SizePanelProps
+) {
   return (
     <>
       <div className="py-6">
@@ -58,6 +61,7 @@ export default function SizePanel({ modalOpen, setModalOpen, categories }: SizeP
               <AddSizeForm 
                 setModalOpen={setModalOpen}
                 categories={categories}
+                apiUrl={apiUrl}
               />
             </Dialog.Panel>
           </div>

@@ -21,10 +21,10 @@ mutation createOneColor($data: ColorCreateInput!) {
  * Creates a new color.
  * @returns Wrapped `useMutation` results with new color id.
  */
-export function useCreateOneColor() {
+export function useCreateOneColor(apiUrl: string) {
   const client = useQueryClient();
   return useMutation('createOneColor', async (variables: ColorCreateVariables) => {
-    return await request('http://localhost:3000/api/graphql', mutation, variables);
+    return await request(apiUrl, mutation, variables);
   },
   {
     onSuccess: () => {

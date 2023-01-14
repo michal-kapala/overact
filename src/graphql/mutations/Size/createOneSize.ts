@@ -21,10 +21,10 @@ mutation createOneSize($data: SizeCreateInput!) {
  * Creates a new size.
  * @returns Wrapped `useMutation` results with new size id.
  */
-export function useCreateOneSize() {
+export function useCreateOneSize(apiUrl: string) {
   const client = useQueryClient();
   return useMutation('createOneColor', async (variables: SizeCreateVariables) => {
-    return await request('http://localhost:3000/api/graphql', mutation, variables);
+    return await request(apiUrl, mutation, variables);
   },
   {
     onSuccess: () => {

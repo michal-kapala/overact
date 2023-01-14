@@ -24,8 +24,8 @@ query categories {
  * Fetches all categories.
  * @returns Wrapped useQuery results with category list
  */
-export function useCategories(): UseQueryResult<CategoriesResult, unknown> {
+export function useCategories(apiUrl: string): UseQueryResult<CategoriesResult, unknown> {
   return useQuery('categories', async () => {
-    return await request('http://localhost:3000/api/graphql', query);
+    return await request(apiUrl, query);
   });
 }
