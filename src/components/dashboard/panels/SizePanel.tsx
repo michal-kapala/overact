@@ -1,17 +1,20 @@
 import { Dialog } from "@headlessui/react";
-import { Category } from "../../../../prisma/generated/type-graphql";
 import AddSizeForm from "../forms/AddSizeForm";
+import { useCategories } from "../../../graphql/queries/Category/categories";
 
 interface SizePanelProps {
   modalOpen: boolean;
   setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  categories: Category[];
   apiUrl: string;
 }
 
 export default function SizePanel(
-  { modalOpen, setModalOpen, categories, apiUrl }: SizePanelProps
+  { modalOpen, setModalOpen, apiUrl }: SizePanelProps
 ) {
+  
+  // product categories
+  const { isLoading: isCategoriesLoading, data: categories } = useCategories(apiUrl);
+
   return (
     <>
       <div className="py-6">
@@ -60,7 +63,7 @@ export default function SizePanel(
               {/* Add size form */}
               <AddSizeForm 
                 setModalOpen={setModalOpen}
-                categories={categories}
+                categories={categories?.categories ?? []}
                 apiUrl={apiUrl}
               />
             </Dialog.Panel>

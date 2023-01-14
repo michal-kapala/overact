@@ -16,6 +16,8 @@ query categories {
         id
         name
         tags
+        sizeable
+        colorable
     }
 }
 `;

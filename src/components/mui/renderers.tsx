@@ -1,5 +1,9 @@
 import { GridRenderCellParams } from "@mui/x-data-grid";
 import { Color, Size } from "../../../prisma/generated/type-graphql";
+import {
+  CheckCircleIcon,
+  XCircleIcon,
+} from '@heroicons/react/outline'
 
 // Renderer function for MUI DataGrid columns' renderCell
 
@@ -65,4 +69,48 @@ export function ImageRenderer(
   }
   // no data
   return <p>-</p>
+}
+
+/**
+ * Renders string[] as a list inside of a DataGrid cell.
+ * @param params 
+ * @returns List of strings
+ */
+export function StringsRenderer(
+  params: GridRenderCellParams<any>
+): JSX.Element | null {
+  const tags = params.row.tags as string[];
+  
+  // returns a list of tag names
+  if(tags && tags.length > 0) {
+    return <ul>
+      {
+        tags.map((t, idx) => <li key={idx}>{t}</li>)
+      }
+    </ul>
+  }
+  // no data
+  return <p>-</p>
+}
+
+/**
+ * Renders boolean as an icon.
+ * @param params 
+ * @returns An icon
+ */
+export function BooleanRenderer(
+  params: GridRenderCellParams<any>
+): JSX.Element | null {
+  const bool = params.value as boolean;
+  if(!bool) {
+    return <XCircleIcon
+      className='text-red-500 mr-4 flex-shrink-0 h-6 w-6'
+      aria-hidden="true"
+    />
+  } else {
+    return <CheckCircleIcon
+      className='text-green-500 mr-4 flex-shrink-0 h-6 w-6'
+      aria-hidden="true"
+    />
+  }
 }

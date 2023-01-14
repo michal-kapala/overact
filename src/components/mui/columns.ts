@@ -1,6 +1,12 @@
-import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
-import { Category, Color, Size } from "../../../prisma/generated/type-graphql";
-import { ColorsRenderer, ImageRenderer, SizesRenderer } from './renderers';
+import { GridColDef } from "@mui/x-data-grid";
+import { Category } from "../../../prisma/generated/type-graphql";
+import {
+  BooleanRenderer,
+  ColorsRenderer,
+  ImageRenderer,
+  SizesRenderer,
+  StringsRenderer
+} from './renderers';
 
 // Column definitions for dashboard data tables
 
@@ -40,8 +46,37 @@ export const productColumns: GridColDef[] = [
     headerName: 'Sizes',
     width: 140,
     type: 'string',
-    
     renderCell: SizesRenderer,
   },
   { field: 'price', headerName: 'Price ($)', width: 80, type: 'number' },
+];
+
+/**
+ * Column definitions for categories table.
+ * 
+ * Names in `field` property have to match with actual product properties.
+ */
+export const categoryColumns: GridColDef[] = [
+  {field: 'name', headerName: 'Name', width: 120, type: 'string' },
+  { 
+    field: 'tags',
+    headerName: 'Tags',
+    width: 120,
+    type: 'string',
+    renderCell: StringsRenderer,
+  },
+  { 
+    field: 'colorable',
+    headerName: 'Colors',
+    width: 80,
+    type: 'boolean',
+    renderCell: BooleanRenderer,
+  },
+  { 
+    field: 'sizeable',
+    headerName: 'Sizes',
+    width: 80,
+    type: 'boolean',
+    renderCell: BooleanRenderer,
+  },
 ];

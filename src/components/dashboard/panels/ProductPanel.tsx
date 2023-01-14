@@ -1,12 +1,10 @@
 import { Dialog } from "@headlessui/react";
-import Box from "@mui/material/Box";
-import { DataGrid } from '@mui/x-data-grid';
 import AddProductForm from "../forms/AddProductForm";
-import { Category, Color, Product, Size } from "../../../../prisma/generated/type-graphql";
+import { Color, Product, Size } from "../../../../prisma/generated/type-graphql";
 import { productColumns } from "../../mui/columns";
-import { ThemeProvider } from "@mui/system";
-import { theme } from "../../mui/theme";
 import { ProductsResult, useProducts } from "../../../graphql/queries/Product/products";
+import { useCategories } from "../../../graphql/queries/Category/categories";
+import DataTable from "../../global/controls/DataTable";
 
 /**
  * Transforms products for table display.
@@ -33,7 +31,6 @@ function transformProducts(result: ProductsResult | null, url: string): Product[
 }
 
 interface ProductsPanelProps {
-  categories: Category[];
   colors: Color[];
   sizes: Size[];
   modalOpen: boolean;
@@ -43,11 +40,14 @@ interface ProductsPanelProps {
 }
 
 export default function ProductPanel(
-  { categories, colors, sizes, setModalOpen, modalOpen, storageUrl, apiUrl }: ProductsPanelProps
+  { colors, sizes, setModalOpen, modalOpen, storageUrl, apiUrl }: ProductsPanelProps
 ) {
 
   // products
-  const {isLoading, data: products} = useProducts(apiUrl);
+  const {isLoading: isProductsLoading, data: products} = useProducts(apiUrl);
+
+  // product categories
+  const { isLoading: isCategoriesLoading, data: categories } = useCategories(apiUrl);
 
   return (
     <>
@@ -71,27 +71,14 @@ export default function ProductPanel(
           {/* Data table */}
           <div className="py-4 text-white">
             {
-              isLoading
+              isProductsLoading || isCategoriesLoading
                 ?
                 <h1>Data loading...</h1>
                 :
-                <ThemeProvider theme={theme}>
-                  <Box sx={{ height: 400, width: '100%' }}>
-                    <DataGrid
-                      rows={transformProducts(products ?? null, storageUrl)}
-                      columns={productColumns}
-                      pageSize={5}
-                      rowsPerPageOptions={[5]}
-                      checkboxSelection
-                      disableSelectionOnClick
-                      getRowHeight={() => 'auto'}
-                      sx={{ 
-                        color: 'text.primary',
-                        bgcolor: 'background.paper'
-                      }}
-                    />
-                  </Box>
-                </ThemeProvider>
+                <DataTable
+                  rows={transformProducts(products ?? null, storageUrl)}
+                  columns={productColumns}
+                />
             }
           </div>
           {/* End replace */}
@@ -118,7 +105,7 @@ export default function ProductPanel(
               </div>
               {/* Add product form */}
               <AddProductForm 
-                categories={categories}
+                categories={categories?.categories ?? []}
                 colors={colors}
                 sizes={sizes}
                 setModalOpen={setModalOpen}

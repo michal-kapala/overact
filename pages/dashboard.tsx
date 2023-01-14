@@ -12,7 +12,6 @@ import ProductPanel from '../src/components/dashboard/panels/ProductPanel'
 import CategoryPanel from '../src/components/dashboard/panels/CategoryPanel'
 import ColorPanel from '../src/components/dashboard/panels/ColorPanel'
 import SizePanel from '../src/components/dashboard/panels/SizePanel'
-import { useCategories } from '../src/graphql/queries/Category/categories'
 import type { OveractUser } from '../src/types/OveractUser'
 import { SessionContextProvider } from '@supabase/auth-helpers-react'
 import { createClient } from '@supabase/supabase-js';
@@ -58,9 +57,6 @@ export default function DashboardPage({ cdnUrl, cdnAnonKey, apiUrl }: DashboardP
 
   // dashboard-scoped supabase client
   const supabaseClient = createClient(cdnUrl, cdnAnonKey);
-  
-  // product categories
-  const { isLoading: isCategoriesLoading, data: categories } = useCategories(apiUrl);
 
   // colors
   const { isLoading: isColorsLoading, data: colors } = useColors(apiUrl);
@@ -76,7 +72,7 @@ export default function DashboardPage({ cdnUrl, cdnAnonKey, apiUrl }: DashboardP
   const [addColorModalOpen, setAddColorModalOpen] = useState(false);
   const [addSizeModalOpen, setAddSizeModalOpen] = useState(false);
 
-  if(isCategoriesLoading || isColorsLoading || isSizesLoading) {
+  if(isColorsLoading || isSizesLoading) {
     return (
       <>
         <Head>
@@ -135,7 +131,6 @@ export default function DashboardPage({ cdnUrl, cdnAnonKey, apiUrl }: DashboardP
                 activeTab == tabs.products
                   ?
                   <ProductPanel 
-                    categories={categories?.categories ?? []}
                     colors={colors?.colors ?? []}
                     sizes={sizes?.sizes ?? []}
                     modalOpen={addProductModalOpen}
@@ -149,7 +144,7 @@ export default function DashboardPage({ cdnUrl, cdnAnonKey, apiUrl }: DashboardP
               {
                 activeTab == tabs.categories
                   ?
-                  <CategoryPanel 
+                  <CategoryPanel
                     modalOpen={addCategoryModalOpen}
                     setModalOpen={setAddCategoryModalOpen}
                     apiUrl={apiUrl}
@@ -172,7 +167,6 @@ export default function DashboardPage({ cdnUrl, cdnAnonKey, apiUrl }: DashboardP
                 activeTab == tabs.sizes
                   ?
                   <SizePanel
-                    categories={categories?.categories ?? []}
                     modalOpen={addSizeModalOpen}
                     setModalOpen={setAddSizeModalOpen}
                     apiUrl={apiUrl}
