@@ -1,8 +1,6 @@
 import Head from 'next/head'
-import { useSession } from "next-auth/react"
 import React, { useState } from 'react'
 import { tabs } from '../src/types/navigation'
-import Layout from '../src/components/global/Layout'
 import MobileSidebar from '../src/components/dashboard/MobileSidebar'
 import DesktopSidebar from '../src/components/dashboard/DesktopSidebar'
 import TopBar from '../src/components/dashboard/TopBar'
@@ -17,23 +15,50 @@ import { SessionContextProvider } from '@supabase/auth-helpers-react'
 import { createClient } from '@supabase/supabase-js';
 import { useColors } from '../src/graphql/queries/Color/colors'
 import { useSizes } from '../src/graphql/queries/Size/sizes'
+import { unstable_getServerSession } from 'next-auth'
+import { authOptions } from './api/auth/[...nextauth]'
 
 /**
  * API data fetched from the server.
  */
 interface DashboardProps {
-  cdnAnonKey: string;
-  cdnUrl: string;
+  /**
+   * GraphQL API URL.
+   */
   apiUrl: string;
+  /**
+   * Base URL to Supabase Storage.
+   */
+  cdnUrl: string;
+  /**
+   * Supabase `anon` role API key.
+   */
+  cdnAnonKey: string;
+  /**
+   * NextAuth user.
+   */
+  user: OveractUser;
 }
 
 /**
- * Returns API data from the server.
+ * Validates admin user session and returns API data from the server.
  * @param ctx Call context.
- * @returns `Promise<DashboardProps>`
+ * @returns `Promise<DashboardProps>` or a redirection
  */
-export function getServerSideProps(ctx: any) {
-  // build API url (client-side appUrl is /)
+export async function getServerSideProps(ctx: any) {
+  // page protection - redirect to 404 page
+  const ses = await unstable_getServerSession(ctx.req, ctx.res, authOptions);
+  const user = ses?.user as OveractUser;
+  if(!ses || !user || user.role !== 'ADMIN') {
+    return {
+      redirect: {
+        destination: '/404',
+        permanent: false,
+      },
+    }
+  }
+
+  // build API url (client-side apiUrl is /)
   const host = ctx.req.headers['host'];
   const apiUrl = host !== '/'
     // server query
@@ -41,24 +66,25 @@ export function getServerSideProps(ctx: any) {
     // client query
     : `${host}api/graphql`;
 
+  const cdnUrl = process.env.NEXT_PUBLIC_SUPABASE_URL as string;
+  const cdnAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string;
   return {
     props: {
-      cdnUrl: process.env.NEXT_PUBLIC_SUPABASE_URL,
-      cdnAnonKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
-      // next app base URL passed in 'Host' header
       apiUrl,
+      cdnUrl,
+      cdnAnonKey,
+      user,
     } as DashboardProps, 
   }
 }
 
-export default function DashboardPage({ cdnUrl, cdnAnonKey, apiUrl }: DashboardProps) {
-  // auth
-  const { data: session, status } = useSession()
+export default function DashboardPage({ apiUrl, cdnUrl, cdnAnonKey, user }: DashboardProps) {
 
-  // dashboard-scoped supabase client
+  /**
+   * Dashboard-scoped Supabase client for storage API access.
+   */
   const supabaseClient = createClient(cdnUrl, cdnAnonKey);
 
-  // TODO: the page should be fully protected so that the queries happen only for admin users
   // colors
   const { isLoading: isColorsLoading, data: colors } = useColors(apiUrl);
 
@@ -86,116 +112,97 @@ export default function DashboardPage({ cdnUrl, cdnAnonKey, apiUrl }: DashboardP
     )
   }
 
-  // Cast user data to include role injected in session() callback
-  var userCast = session?.user as OveractUser;
-
-  if(status === "authenticated" && userCast.role === "ADMIN")
-  {
-    return (
-      <SessionContextProvider
-        supabaseClient={supabaseClient}
-      >
-        <div>
-          <Head>
-            <title>Dashboard | Overact</title>
-          </Head>
-
-          {/* Closeable sidebar for mobile */}
-          <MobileSidebar 
-            sidebarOpen={sidebarOpen}
-            setSidebarOpen={setSidebarOpen}
-            activeTab={activeTab}
-            setActiveTab={setActiveTab}
-          />
-
-          {/* Static sidebar for desktop */}
-          <DesktopSidebar 
-            sidebarOpen={sidebarOpen}
-            setSidebarOpen={setSidebarOpen}
-            activeTab={activeTab}
-            setActiveTab={setActiveTab}
-          />
-
-          {/* Top bar and a panel */}
-          <div className="md:pl-64 flex flex-col">
-
-            <TopBar
-              username={session.user?.name as string}
-              setSidebarOpen={setSidebarOpen}
-            />
-  
-            {/* Panels */}
-            <main className="flex-1">
-              { activeTab == tabs.dashboard ? <DashboardPanel /> : <div/> }
-              { activeTab == tabs.orders ? <OrderPanel /> : <div/> }
-              {
-                activeTab == tabs.products
-                  ?
-                  <ProductPanel 
-                    colors={colors?.colors ?? []}
-                    sizes={sizes?.sizes ?? []}
-                    modalOpen={addProductModalOpen}
-                    setModalOpen={setAddProductModalOpen}
-                    storageUrl={cdnUrl}
-                    apiUrl={apiUrl}
-                  />
-                  :
-                  <div/>
-              }
-              {
-                activeTab == tabs.categories
-                  ?
-                  <CategoryPanel
-                    modalOpen={addCategoryModalOpen}
-                    setModalOpen={setAddCategoryModalOpen}
-                    apiUrl={apiUrl}
-                  />
-                  :
-                  <div/>
-              }
-              {
-                activeTab == tabs.colors
-                  ?
-                  <ColorPanel
-                    colors={colors?.colors ?? []}
-                    isLoading={isColorsLoading}
-                    modalOpen={addColorModalOpen}
-                    setModalOpen={setAddColorModalOpen}
-                    apiUrl={apiUrl}
-                  />
-                  :
-                  <div/>
-              }
-              {
-                activeTab == tabs.sizes
-                  ?
-                  <SizePanel
-                    sizes={sizes?.sizes ?? []}
-                    isLoading={isSizesLoading}
-                    modalOpen={addSizeModalOpen}
-                    setModalOpen={setAddSizeModalOpen}
-                    apiUrl={apiUrl}
-                  />
-                  :
-                  <div/>
-              }
-            </main>
-          </div>
-        </div>
-      </SessionContextProvider>
-    );
-  }
-  if(status === "unauthenticated" || (status === "authenticated" && userCast.role == "USER")) {
-    return(
-      <Layout>
+  return (
+    <SessionContextProvider
+      supabaseClient={supabaseClient}
+    >
+      <div>
         <Head>
           <title>Dashboard | Overact</title>
         </Head>
-        <div className="text-center py-64 sm:py-72 md:py-80 md:my-2">
-          <h1 className="text-4xl"><b>401 Unauthorized</b></h1>
-          <h1 className="text-2xl pt-4">Please login to proceed.</h1>
+
+        {/* Closeable sidebar for mobile */}
+        <MobileSidebar 
+          sidebarOpen={sidebarOpen}
+          setSidebarOpen={setSidebarOpen}
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+        />
+
+        {/* Static sidebar for desktop */}
+        <DesktopSidebar 
+          sidebarOpen={sidebarOpen}
+          setSidebarOpen={setSidebarOpen}
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+        />
+
+        {/* Top bar and a panel */}
+        <div className="md:pl-64 flex flex-col">
+
+          <TopBar
+            username={user.name as string}
+            setSidebarOpen={setSidebarOpen}
+          />
+
+          {/* Panels */}
+          <main className="flex-1">
+            { activeTab == tabs.dashboard ? <DashboardPanel /> : <div/> }
+            { activeTab == tabs.orders ? <OrderPanel /> : <div/> }
+            {
+              activeTab == tabs.products
+                ?
+                <ProductPanel 
+                  colors={colors?.colors ?? []}
+                  sizes={sizes?.sizes ?? []}
+                  modalOpen={addProductModalOpen}
+                  setModalOpen={setAddProductModalOpen}
+                  storageUrl={cdnUrl}
+                  apiUrl={apiUrl}
+                />
+                :
+                <div/>
+            }
+            {
+              activeTab == tabs.categories
+                ?
+                <CategoryPanel
+                  modalOpen={addCategoryModalOpen}
+                  setModalOpen={setAddCategoryModalOpen}
+                  apiUrl={apiUrl}
+                />
+                :
+                <div/>
+            }
+            {
+              activeTab == tabs.colors
+                ?
+                <ColorPanel
+                  colors={colors?.colors ?? []}
+                  isLoading={isColorsLoading}
+                  modalOpen={addColorModalOpen}
+                  setModalOpen={setAddColorModalOpen}
+                  apiUrl={apiUrl}
+                />
+                :
+                <div/>
+            }
+            {
+              activeTab == tabs.sizes
+                ?
+                <SizePanel
+                  sizes={sizes?.sizes ?? []}
+                  isLoading={isSizesLoading}
+                  modalOpen={addSizeModalOpen}
+                  setModalOpen={setAddSizeModalOpen}
+                  apiUrl={apiUrl}
+                />
+                :
+                <div/>
+            }
+          </main>
         </div>
-      </Layout>
-    );
-  }
+      </div>
+    </SessionContextProvider>
+  );
 }
