@@ -59,7 +59,6 @@ export default function ColorMultiselect(
               id="color-autocomplete"
               value={selected}
               onChange={(event: any, newValue: Color| null) => {
-                const sorted = colors.sort((a,b) => compColors(a,b));
                 setSelected(newValue ?? defaultColor)
                 setInputValue("");
               }}

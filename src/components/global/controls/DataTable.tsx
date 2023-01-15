@@ -5,26 +5,51 @@ import { DataGrid, GridColumns } from '@mui/x-data-grid';
 
 interface DataTableProps {
   rows: any[];
-  columns: GridColumns<any>
+  columns: GridColumns<any>;
+  selected?: any[];
+  setSelected?: Function;
 }
 
-export default function DataTable({ rows, columns }: DataTableProps) {
+export default function DataTable({rows, columns, selected, setSelected }: DataTableProps) {
   return (
     <ThemeProvider theme={theme}>
       <Box sx={{ height: 400, width: '100%' }}>
-        <DataGrid
-          rows={rows}
-          columns={columns}
-          pageSize={5}
-          rowsPerPageOptions={[5]}
-          checkboxSelection
-          disableSelectionOnClick
-          getRowHeight={() => 'auto'}
-          sx={{ 
-            color: 'text.primary',
-            bgcolor: 'background.paper'
-          }}
-        />
+        {/** Selection is optional */}
+        {
+          selected && setSelected
+            ?
+            <DataGrid
+              rows={rows}
+              columns={columns}
+              pageSize={5}
+              rowsPerPageOptions={[5]}
+              checkboxSelection
+              disableSelectionOnClick
+              selectionModel={selected}
+              onSelectionModelChange={(newSelectionModel) => {
+                setSelected(newSelectionModel);
+              }}
+              getRowHeight={() => 'auto'}
+              sx={{ 
+                color: 'text.primary',
+                bgcolor: 'background.paper'
+              }}
+            />
+            :
+            <DataGrid
+              rows={rows}
+              columns={columns}
+              pageSize={5}
+              rowsPerPageOptions={[5]}
+              checkboxSelection
+              disableSelectionOnClick
+              getRowHeight={() => 'auto'}
+              sx={{ 
+                color: 'text.primary',
+                bgcolor: 'background.paper'
+              }}
+            />
+        }
       </Box>
     </ThemeProvider>
   );

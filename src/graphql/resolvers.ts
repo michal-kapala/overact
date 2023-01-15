@@ -11,6 +11,7 @@ import {
   CreateOneSizeResolver,
   FindManySizeResolver,
   SizeRelationsResolver,
+  DeleteManyProductResolver,
 } from "../../prisma/generated/type-graphql";
 
 /**
@@ -22,6 +23,7 @@ export const resolvers = [
   // Product
   FindManyProductResolver,
   CreateOneProductResolver,
+  DeleteManyProductResolver,
   // THIS IS REQUIRED FOR NESTED QUERY RESOLUTION
   ProductRelationsResolver,
   // Category

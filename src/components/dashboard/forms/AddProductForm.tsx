@@ -46,10 +46,10 @@ export default function AddProductForm(
   const defaultCategory = {
     id: "",
     name: "Default category"
-  } as CategoryWhereUniqueInput;
+  } as Category;
 
   // category mapped for input
-  const [category, setCategory] = useState<CategoryWhereUniqueInput>(
+  const [category, setCategory] = useState<Category>(
     defaultCategory
   );
 

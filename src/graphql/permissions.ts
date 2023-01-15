@@ -14,9 +14,14 @@ export const permissions = shield(
       sizes: isAdmin,
     },
     Mutation: {
+      // Product
       createOneProduct: isAdmin,
+      deleteManyProduct: isAdmin,
+      // Category
       createOneCategory: isAdmin,
+      // Color
       createOneColor: isAdmin,
+      // Size
       createOneSize: isAdmin,
     },
   },

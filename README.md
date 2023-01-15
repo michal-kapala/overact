@@ -47,22 +47,13 @@ To configure Supabase Storage:
 
 1. Go to 'Storage' in your Supabase project and create a **public** `product-images` [bucket](https://supabase.com/docs/guides/storage#buckets).
 
-2. Create the following policies for `storage.objects` table:
-- `INSERT` (`WITH CHECK` expression)
+2. Create the following policy for `storage.objects` table, which enables all operations for `anon` role:
+
 ```sql
-CREATE POLICY "policy_name"
-ON storage.objects
-FOR INSERT USING (
-  (bucket_id = 'product-images'::text) AND (role() = 'anon'::text)
-);
-```
-- `DELETE`
-```sql
-CREATE POLICY "policy_name"
-ON storage.objects
-FOR DELETE USING (
-  (bucket_id = 'product-images'::text) AND (role() = 'anon'::text)
-);
+CREATE POLICY "allow all for anon" ON "storage"."objects"
+AS PERMISSIVE FOR ALL
+TO anon
+USING (bucket_id = 'product-images'::text)
 ```
 3. Copy `anon` API key and project URL from `API/Settings` and add them as variables to `.env.local`:
 ```

@@ -1,10 +1,13 @@
 import { Dialog } from "@headlessui/react";
 import AddProductForm from "../forms/AddProductForm";
-import { Color, Product, Size } from "../../../../prisma/generated/type-graphql";
+import { Color, Product, ProductWhereInput, Size } from "../../../../prisma/generated/type-graphql";
 import { productColumns } from "../../mui/columns";
 import { ProductsResult, useProducts } from "../../../graphql/queries/Product/products";
 import { useCategories } from "../../../graphql/queries/Category/categories";
 import DataTable from "../../global/controls/DataTable";
+import { useState } from "react";
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import { useDeleteManyProduct } from "../../../graphql/mutations/Product/deleteManyProduct";
 
 /**
  * Transforms products for table display.
@@ -50,6 +53,15 @@ export default function ProductPanel(
   // product categories
   const { isLoading: isCategoriesLoading, data: categories } = useCategories(apiUrl);
 
+  // supabase client
+  const supabase = useSupabaseClient();
+
+  // selected product ids
+  const [selected, setSelected] = useState<string[]>([]);
+
+  // delete mutation
+  const { mutate: deleteProducts } = useDeleteManyProduct(apiUrl);
+
   return (
     <>
       <div className="py-6">
@@ -63,6 +75,37 @@ export default function ProductPanel(
                 onClick={() => setModalOpen(!modalOpen)}
               >
                 Add
+              </button>
+              <button className="inline-flex items-center justify-center ml-2 rounded-md border border-transparent bg-red-500 px-5 py-2 text-base font-medium text-white hover:bg-red-600"
+                disabled={selected.length === 0 || !products}
+                onClick={async () => {
+                  const deleted = products?.products.filter(p => selected.includes(p.id));
+
+                  // delete images
+                  let deletedFiles: string[] = [];
+                  deleted?.forEach((p) => {
+                    deletedFiles.push(p.image);
+                  });
+                  
+                  const { error } = await supabase
+                    .storage.from('product-images').remove(deletedFiles);
+
+                  // delete products from db
+                  let deletedIds: string[] = [];
+                  deleted?.forEach((p) => {
+                    deletedIds.push(p.id);
+                  });
+
+                  const data = {
+                    id: {
+                      in: deletedIds
+                    }
+                  } as ProductWhereInput;
+                  
+                  deleteProducts({data});
+                }}
+              >
+                Delete
               </button>
             </div>
           </div>
@@ -79,6 +122,8 @@ export default function ProductPanel(
                 <DataTable
                   rows={transformProducts(products ?? null, storageUrl)}
                   columns={productColumns}
+                  selected={selected}
+                  setSelected={setSelected}
                 />
             }
           </div>
