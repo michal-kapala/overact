@@ -61,7 +61,7 @@ USING (bucket_id = 'product-images'::text)
 NEXT_PUBLIC_SUPABASE_URL=<your Supabase URL>
 NEXT_PUBLIC_SUPABASE_ANON_KEY=<your anon API key>
 ```
-These will be exposed under [/api/supabase/storage](https://github.com/michal-kapala/overact/blob/main/pages/api/supabase/storage.ts) for `ADMIN` users.
+These will be passed as props to the protected pages by `getServerSideProps` to create a client-side [Supabase Client](https://github.com/supabase/supabase-js#usage).
 
 4. Generate [Supabase types](https://supabase.com/docs/guides/api/generating-types) for Typescript:
 - make sure you installed the dependencies
