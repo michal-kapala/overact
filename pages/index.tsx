@@ -31,7 +31,7 @@ export async function getServerSideProps(ctx: any) {
   const host = ctx.req.headers['host'];
   const apiUrl = host !== '/'
     // server query
-    ? `http://${host}/api/graphql`
+    ? `https://${host}/api/graphql`
     // client query
     : `${host}api/graphql`;
   const result = await queryProducts(apiUrl);
