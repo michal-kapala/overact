@@ -4,7 +4,7 @@ Overact is an e-commerce platform built with Next.js and Supabase.
 This is Vercel production branch of the repo. You can deploy your own instance using the button below.
 
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fmichal-kapala%2Foveract&env=DATABASE_URL,SHADOW_DATABASE_URL,NEXTAUTH_SECRET,GITHUB_ID,GITHUB_SECRET,GOOGLE_CLIENT_ID,GOOGLE_CLIENT_SECRET,NEXT_PUBLIC_SUPABASE_URL,NEXT_PUBLIC_SUPABASE_ANON_KEY&envDescription=Environment%20variable%20needed%20to%20run%20the%20application%20with%20the%20implemented%20intergrations%20(Prisma%2C%20NextAuth%20GitHub%2BGoogle%2C%20Supabase)&envLink=https%3A%2F%2Fgithub.com%2Fmichal-kapala%2Foveract)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fmichal-kapala%2Foveract%2Ftree%2Fvercel&env=DATABASE_URL,SHADOW_DATABASE_URL,NEXTAUTH_SECRET,GITHUB_ID,GITHUB_SECRET,GOOGLE_CLIENT_ID,GOOGLE_CLIENT_SECRET,NEXT_PUBLIC_SUPABASE_URL,NEXT_PUBLIC_SUPABASE_ANON_KEY&envDescription=Environment%20variable%20needed%20to%20run%20the%20application%20with%20the%20implemented%20intergrations%20(Prisma%2C%20NextAuth%20GitHub%2BGoogle%2C%20Supabase)&envLink=https%3A%2F%2Fgithub.com%2Fmichal-kapala%2Foveract)
 
 # Configuration
 
