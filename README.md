@@ -1,6 +1,8 @@
 # Overview
 Overact is an e-commerce platform built with Next.js and Supabase.
 
+This is Vercel production branch of the repo.
+
 # Configuration
 
 ## Database
