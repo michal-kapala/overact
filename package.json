@@ -31,7 +31,7 @@
     "graphql-shield": "^7.6.5",
     "micro": "^9.4.1",
     "next": "12.3.1",
-    "next-auth": "^4.14.0",
+    "next-auth": "^4.20.1",
     "react": "18.2.0",
     "react-color-palette": "^6.2.0",
     "react-dom": "18.2.0",
